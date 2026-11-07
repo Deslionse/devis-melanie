@@ -490,6 +490,44 @@ input:checked + .slider::before { transform: translateX(22px); }
     align-items: center;
     gap: 10px;
 }
+.address-suggestions {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid var(--gold-soft);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    z-index: 1000;
+    max-height: 230px;
+    overflow-y: auto;
+}
+.address-item {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f1f3f5;
+    cursor: pointer;
+    font-size: 0.88em;
+    color: var(--text);
+    transition: background 0.15s ease;
+    display: flex;
+    flex-direction: column;
+}
+.address-item:last-child {
+    border-bottom: none;
+}
+.address-item:hover, .address-item:active {
+    background: #fff8ef;
+    color: var(--gold-dark);
+}
+.address-item .addr-main {
+    font-weight: 700;
+}
+.address-item .addr-context {
+    font-size: 0.8em;
+    color: var(--text-light);
+    margin-top: 2px;
+}
 
 /* --- ÉCRAN DE VERROUILLAGE PIN --- */
 body.pin-locked { overflow: hidden; }
@@ -789,12 +827,29 @@ body.pin-locked { overflow: hidden; }
     <!-- Déplacement & Frais kilométriques automatiques -->
     <section class="card" style="margin-top:16px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h2>🚗 Frais de déplacement</h2>
+            <h2>🚗 Frais de déplacement & Adresse</h2>
             <span id="depBadge" class="dep-badge">10 km offerts</span>
         </div>
 
+        <!-- Saisie adresse avec recherche automatique BAN -->
+        <div id="addressContainer" class="form-group" style="position:relative; margin-bottom:12px;">
+            <label for="clientAddress">Adresse du client (calcul automatique des km)</label>
+            <div style="position:relative;">
+                <input type="text" id="clientAddress" class="input-text" placeholder="Tapez l'adresse (ex: 14 Rue de Paris, Lieusaint...)" autocomplete="off" oninput="onAddressInput(event)" onblur="onAddressBlur()" />
+                <div id="addressSpinner" style="display:none; position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:0.82em; color:var(--gold-dark); font-weight:600;">⏳ Recherche...</div>
+            </div>
+            <!-- Liste de suggestions d'adresses -->
+            <div id="addressSuggestions" class="address-suggestions" style="display:none;"></div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px; margin:10px 0; color:var(--text-light); font-size:0.8em;">
+            <span style="flex:1; height:1px; background:var(--line);"></span>
+            <span>ou choix rapide par commune</span>
+            <span style="flex:1; height:1px; background:var(--line);"></span>
+        </div>
+
         <div class="form-group" style="margin-bottom:8px;">
-            <label>Commune du rendez-vous (91 & 77)</label>
+            <label for="citySelect">Commune du rendez-vous (91 & 77)</label>
             <select id="citySelect" class="input-text city-select" onchange="onCityChange()">
                 <option value="">Sélectionnez la ville du client...</option>
             </select>
@@ -803,9 +858,9 @@ body.pin-locked { overflow: hidden; }
         <!-- Détail & calcul kilométrique automatique -->
         <div id="depDetailBox" class="dep-detail-box" style="display:none;">
             <div class="dep-detail-row">
-                <div>
-                    <span id="depCityLabel" style="font-weight:700; color:var(--text);"></span>
-                    <span id="depDistLabel" style="font-size:0.82em; color:var(--text-light); margin-left:6px;"></span>
+                <div style="flex:1;">
+                    <div id="depCityLabel" style="font-weight:700; color:var(--text); font-size:0.95em;"></div>
+                    <div id="depDistLabel" style="font-size:0.82em; color:var(--text-light); margin-top:2px;"></div>
                 </div>
                 <div style="display:flex; align-items:center; gap:6px;">
                     <span style="font-size:0.85em; color:var(--text-light);">Frais :</span>
@@ -813,7 +868,7 @@ body.pin-locked { overflow: hidden; }
                     <strong>€</strong>
                 </div>
             </div>
-            <div id="depExplanation" style="font-size:0.78em; color:var(--text-light); margin-top:5px; line-height:1.4;"></div>
+            <div id="depExplanation" style="font-size:0.8em; color:var(--text-light); margin-top:6px; line-height:1.4;"></div>
         </div>
 
         <!-- Saisie personnalisée si "Autre commune" -->
@@ -872,6 +927,7 @@ body.pin-locked { overflow: hidden; }
                 <div class="devis-sheet-title">Les Ciseaux de Mélanie</div>
                 <div class="devis-sheet-sub">Coiffure à domicile & Événements</div>
                 <div id="modalClientInfo" style="margin-top:6px; font-weight:700; color:var(--rose);"></div>
+                <div id="modalAddressInfo" style="margin-top:4px; font-size:0.85em; color:var(--text); display:none;"></div>
                 <div id="modalRdvInfo" style="margin-top:6px; font-weight:700; color:var(--gold-dark); font-size:0.9em;"></div>
             </div>
             <div id="modalItemsList"></div>
@@ -1052,6 +1108,7 @@ const state = {
     customPrices: {}, // { [id]: prix personnalisé }
     cat: 'ALL',
     search: '',
+    clientAddress: '',
     depCity: '',
     depDist: 0,
     depActive: false,
@@ -1164,6 +1221,170 @@ function filterCat(cat, btn) {
 function filterPrestas() {
     state.search = $('searchInput').value;
     renderList();
+}
+
+// Base de départ pour le calcul kilométrique : Corbeil-Essonnes (91100)
+const CORBEIL_COORDS = { lat: 48.6138, lon: 2.4828 };
+let addressDebounceTimer = null;
+
+// Formule de secours en cas d'absence de réseau OSRM (distance avec facteur routier IDF 1.28)
+function calcHaversineKm(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c * 1.28 * 10) / 10;
+}
+
+// Calcul de la distance routière réelle via OSRM (avec repli local instantané)
+async function getRoadDistanceKm(destLon, destLat) {
+    try {
+        const url = `https://router.project-osrm.org/route/v1/driving/2.4828,48.6138;${destLon},${destLat}?overview=false`;
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 3500);
+        const res = await fetch(url, { signal: ctrl.signal });
+        clearTimeout(tid);
+        if (res.ok) {
+            const data = await res.json();
+            if (data.routes && data.routes[0] && typeof data.routes[0].distance === 'number') {
+                return Math.round(data.routes[0].distance / 100) / 10;
+            }
+        }
+    } catch (e) {}
+    return calcHaversineKm(CORBEIL_COORDS.lat, CORBEIL_COORDS.lon, destLat, destLon);
+}
+
+// Autocomplétion officielle Base Adresse Nationale (BAN) data.gouv.fr
+function onAddressInput(e) {
+    const q = (e.target.value || '').trim();
+    clearTimeout(addressDebounceTimer);
+    const sugBox = $('addressSuggestions');
+    const spinner = $('addressSpinner');
+
+    if (q.length < 3) {
+        if (sugBox) {
+            sugBox.style.display = 'none';
+            sugBox.innerHTML = '';
+        }
+        if (spinner) spinner.style.display = 'none';
+        return;
+    }
+
+    if (spinner) spinner.style.display = 'block';
+
+    addressDebounceTimer = setTimeout(async () => {
+        try {
+            const res = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&limit=5`);
+            if (res.ok) {
+                const data = await res.json();
+                renderAddressSuggestions(data.features || []);
+            }
+        } catch (err) {
+            if (sugBox) sugBox.style.display = 'none';
+        } finally {
+            if (spinner) spinner.style.display = 'none';
+        }
+    }, 280);
+}
+
+function renderAddressSuggestions(features) {
+    const sugBox = $('addressSuggestions');
+    if (!sugBox) return;
+    if (!features || !features.length) {
+        sugBox.style.display = 'none';
+        sugBox.innerHTML = '';
+        return;
+    }
+
+    sugBox.innerHTML = '';
+    features.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'address-item';
+        const label = f.properties.label || '';
+        const context = f.properties.context || `${f.properties.postcode || ''} ${f.properties.city || ''}`;
+        item.innerHTML = `<span class="addr-main">${label}</span><span class="addr-context">${context}</span>`;
+        item.onmousedown = (e) => {
+            e.preventDefault(); // évite le blur avant le clic
+            selectAddressFeature(f);
+        };
+        sugBox.appendChild(item);
+    });
+    sugBox.style.display = 'block';
+}
+
+async function selectAddressFeature(feature) {
+    const label = feature.properties.label;
+    const city = feature.properties.city || '';
+    const postcode = feature.properties.postcode || '';
+    const [lon, lat] = feature.geometry.coordinates;
+
+    $('clientAddress').value = label;
+    state.clientAddress = label;
+    const sugBox = $('addressSuggestions');
+    if (sugBox) sugBox.style.display = 'none';
+
+    // Synchronisation avec la liste des communes si existante
+    if (city && $('citySelect')) {
+        const foundOpt = Array.from($('citySelect').options).find(o => o.value.toLowerCase() === city.toLowerCase());
+        if (foundOpt) $('citySelect').value = foundOpt.value;
+        else $('citySelect').value = '';
+    }
+
+    const badge = $('depBadge');
+    badge.className = 'dep-badge';
+    badge.textContent = '⏳ Calcul trajet...';
+
+    // Calcul de l'itinéraire réel depuis Corbeil
+    const distKm = await getRoadDistanceKm(lon, lat);
+    applyCalculatedDistance(distKm, label, `${city} (${postcode})`);
+}
+
+function applyCalculatedDistance(distKm, displayLabel, cityLabel) {
+    state.depDist = distKm;
+    state.depCity = cityLabel || displayLabel;
+
+    const extraKm = Math.max(0, Math.round(distKm - 10));
+    const amount = extraKm * 1;
+
+    state.depAmount = amount;
+    state.depActive = (amount > 0);
+    $('depAmount').value = amount;
+
+    const badge = $('depBadge');
+    const detailBox = $('depDetailBox');
+    detailBox.style.display = 'block';
+    if ($('customKmRow')) $('customKmRow').style.display = 'none';
+
+    $('depCityLabel').textContent = displayLabel;
+    $('depDistLabel').textContent = `· ${distKm} km réels depuis Corbeil-Essonnes`;
+
+    if (amount === 0) {
+        badge.className = 'dep-badge free';
+        badge.textContent = '✅ Déplacement offert (≤ 10 km)';
+        $('depExplanation').textContent = `Adresse située à ${distKm} km de Corbeil. Trajet 100% inclus dans les 10 km offerts (0 €).`;
+    } else {
+        badge.className = 'dep-badge extra';
+        badge.textContent = `🚗 +${amount} € (${extraKm} km supp.)`;
+        $('depExplanation').textContent = `Adresse située à ${distKm} km de Corbeil. 10 km offerts + ${extraKm} km facturés à 1 €/km = ${amount} €.`;
+    }
+
+    updateTotal();
+    saveDraft();
+}
+
+function onAddressBlur() {
+    setTimeout(() => {
+        const sugBox = $('addressSuggestions');
+        if (sugBox) sugBox.style.display = 'none';
+        const val = ($('clientAddress').value || '').trim();
+        if (val && state.clientAddress !== val) {
+            state.clientAddress = val;
+            saveDraft();
+        }
+    }, 200);
 }
 
 function initCitySelect() {
@@ -1376,6 +1597,12 @@ function generateDevisText() {
         lines.push(`🗓 Rendez-vous : *date et horaire à convenir ensemble*`);
     }
 
+    if (state.clientAddress) {
+        lines.push(`📍 Lieu du RDV : ${state.clientAddress}`);
+    } else if (state.depCity) {
+        lines.push(`📍 Secteur : ${state.depCity}`);
+    }
+
     lines.push('');
 
     Object.entries(state.selected).forEach(([id, qty]) => {
@@ -1419,6 +1646,15 @@ function openDevisModal() {
 
     const name = $('clientName').value.trim();
     $('modalClientInfo').textContent = name ? `Client : ${name}` : '';
+    if (state.clientAddress) {
+        $('modalAddressInfo').style.display = 'block';
+        $('modalAddressInfo').textContent = `📍 Lieu : ${state.clientAddress}`;
+    } else if (state.depCity) {
+        $('modalAddressInfo').style.display = 'block';
+        $('modalAddressInfo').textContent = `📍 Secteur : ${state.depCity}`;
+    } else {
+        $('modalAddressInfo').style.display = 'none';
+    }
     const rdv = formatRdvLabel();
     $('modalRdvInfo').textContent = rdv ? `🗓 RDV : ${rdv}` : '🗓 Date et horaire à convenir';
 
@@ -1542,11 +1778,17 @@ function getGoogleCalendarUrl() {
         descLines.push(`• Déplacement${cityTxt} : ${eur(state.depAmount)}`);
     }
 
+    if (state.clientAddress) {
+        descLines.push(`📍 Lieu du RDV : ${state.clientAddress}`);
+    } else if (state.depCity) {
+        descLines.push(`📍 Secteur : ${state.depCity}`);
+    }
+
     const { total } = updateTotal();
     descLines.push(`\n💰 Total devis : ${eur(total)}`);
 
     const details = descLines.join('\n');
-    const location = state.depCity ? `À domicile (${state.depCity})` : 'À domicile';
+    const location = state.clientAddress || (state.depCity ? `À domicile (${state.depCity})` : 'À domicile');
 
     const googleWebUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startStr}/${endStr}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
 
@@ -1623,10 +1865,15 @@ function downloadIcs() {
     if (state.depActive && state.depAmount > 0) {
         descLines.push(`Deplacement : ${eur(state.depAmount)}`);
     }
+    if (state.clientAddress) {
+        descLines.push(`Lieu du RDV : ${state.clientAddress}`);
+    } else if (state.depCity) {
+        descLines.push(`Secteur : ${state.depCity}`);
+    }
     const { total } = updateTotal();
     descLines.push(`Total : ${eur(total)}`);
     const description = descLines.join('\\n');
-    const location = state.depCity ? `A domicile (${state.depCity})` : 'A domicile';
+    const location = state.clientAddress || (state.depCity ? `A domicile (${state.depCity})` : 'A domicile');
 
     const icsData = [
         'BEGIN:VCALENDAR',
@@ -1713,6 +1960,8 @@ function resetAll() {
     $('customKmRow').style.display = 'none';
     $('depBadge').className = 'dep-badge';
     $('depBadge').textContent = '10 km offerts';
+    if ($('clientAddress')) $('clientAddress').value = '';
+    state.clientAddress = '';
     state.depCity = '';
     state.depDist = 0;
     state.depActive = false;
@@ -1732,6 +1981,7 @@ function saveDraft() {
             customPrices: state.customPrices,
             name: $('clientName').value,
             phone: $('clientPhone').value,
+            clientAddress: state.clientAddress || ($('clientAddress') ? $('clientAddress').value : ''),
             rdvDate: $('rdvDate').value,
             rdvTime: $('rdvTime').value,
             rdvDuration: $('rdvDuration').value,
@@ -1764,6 +2014,10 @@ function loadDraft() {
         if (draft.customPrices) state.customPrices = draft.customPrices;
         if (draft.name) $('clientName').value = draft.name;
         if (draft.phone) $('clientPhone').value = draft.phone;
+        if (draft.clientAddress && $('clientAddress')) {
+            $('clientAddress').value = draft.clientAddress;
+            state.clientAddress = draft.clientAddress;
+        }
         if (draft.rdvDate) $('rdvDate').value = draft.rdvDate;
         if (draft.rdvTime) $('rdvTime').value = draft.rdvTime;
         if (draft.rdvDuration) $('rdvDuration').value = draft.rdvDuration;
@@ -1783,6 +2037,13 @@ function loadDraft() {
         }
     } catch (e) {}
 }
+
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('#addressContainer')) {
+        const box = $('addressSuggestions');
+        if (box) box.style.display = 'none';
+    }
+});
 
 // --- SÉCURITÉ CODE PIN (Cryptographie SHA-256 avec sel) ---
 // Aucun code PIN n'apparaît en clair dans le code source.
