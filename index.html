@@ -1516,7 +1516,9 @@ function getGoogleCalendarUrl() {
     if (customN) prestaNames.push(customN);
 
     const prestaTitle = prestaNames.length ? prestaNames.join(' + ') : 'RDV Coiffure';
-    const title = `${clientName} - ${prestaTitle}`;
+    const { total } = updateTotal();
+    const priceTag = total > 0 ? ` (${eur(total)})` : '';
+    const title = `${clientName} - ${prestaTitle}${priceTag}`;
 
     const descLines = [];
     if (clientPhone) descLines.push(`📞 Client : ${clientName} (${clientPhone})`);
@@ -1610,7 +1612,9 @@ function downloadIcs() {
     const customN = $('customName').value.trim();
     if (customN) prestaNames.push(customN);
     const prestaTitle = prestaNames.length ? prestaNames.join(' + ') : 'RDV Coiffure';
-    const summary = `${clientName} - ${prestaTitle}`;
+    const { total } = updateTotal();
+    const priceTag = total > 0 ? ` (${eur(total)})` : '';
+    const summary = `${clientName} - ${prestaTitle}${priceTag}`;
 
     const descLines = [];
     if (clientPhone) descLines.push(`Client : ${clientName} (${clientPhone})`);
