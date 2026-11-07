@@ -891,10 +891,14 @@ body.pin-locked { overflow: hidden; }
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.16 8.16 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.188 8.188 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02s.87 2.34 1 2.51c.12.16 1.7 2.6 4.12 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.29-.25-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.25-.64.79-.78.95-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.16.04-.31-.02-.44-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42h-.47z"/></svg>
                 WhatsApp
             </a>
-            <a id="btnCalendar" class="btn-share btn-calendar" href="#" target="_blank" onclick="onCalendarClick(event)">
+            <a id="btnCalendar" class="btn-share btn-calendar" href="#" onclick="onCalendarClick(event)">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                Ajouter à Google Agenda
+                Ouvrir Google Agenda
             </a>
+            <button class="btn-share" onclick="downloadIcs()" style="background:#4b5563; color:#fff;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                Télécharger le RDV (.ics)
+            </button>
             <button class="btn-share btn-copy" onclick="copyDevisText()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                 Copier le texte du devis
@@ -904,10 +908,15 @@ body.pin-locked { overflow: hidden; }
         <!-- Notification d'enchaînement Google Agenda après SMS -->
         <div id="calendarNotice" style="display:none; margin-top:14px; padding:14px; background:#e8f0fe; border:1px solid #1a73e8; border-radius:14px; text-align:center;">
             <div style="font-weight:700; color:#1a73e8; font-size:0.95em; margin-bottom:4px;">💬 Message envoyé ou en cours !</div>
-            <div style="font-size:0.82em; color:#3c4043; margin-bottom:10px;">Pensez à enregistrer le créneau dans votre agenda :</div>
-            <a id="btnNoticeCalendar" href="#" onclick="onCalendarClick(event)" class="btn-share btn-calendar" style="padding:11px 18px; margin:0 auto; display:inline-flex;">
-                📅 Enregistrer dans Google Agenda
-            </a>
+            <div style="font-size:0.82em; color:#3c4043; margin-bottom:10px;">Enregistrez directement le créneau dans votre agenda :</div>
+            <div style="display:flex; flex-direction:column; gap:8px; align-items:center;">
+                <a id="btnNoticeCalendar" href="#" onclick="onCalendarClick(event)" class="btn-share btn-calendar" style="padding:10px 18px; margin:0 auto; display:inline-flex; width:100%; max-width:280px; justify-content:center;">
+                    📅 Ouvrir Google Agenda
+                </a>
+                <button onclick="downloadIcs()" class="btn-share" style="padding:10px 18px; margin:0 auto; display:inline-flex; width:100%; max-width:280px; justify-content:center; background:#fff; color:#1a73e8; border:1px solid #1a73e8; font-weight:600;">
+                    📥 Télécharger le RDV (.ics)
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -1544,8 +1553,8 @@ function getGoogleCalendarUrl() {
         const beginMs = startDate.getTime();
         const endMs = endDate.getTime();
         const fallback = encodeURIComponent(googleWebUrl);
-        // Ouvre directement l'application Agenda native sur Android / Xiaomi
-        return `intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;S.title=${encodeURIComponent(title)};S.description=${encodeURIComponent(details)};S.eventLocation=${encodeURIComponent(location)};l.beginTime=${beginMs};l.endTime=${endMs};S.browser_fallback_url=${fallback};end;`;
+        // Syntaxe intent Android avec package com.google.android.calendar pour ouvrir directement l'application native
+        return `intent://#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;package=com.google.android.calendar;S.title=${encodeURIComponent(title)};S.description=${encodeURIComponent(details)};S.eventLocation=${encodeURIComponent(location)};l.beginTime=${beginMs};l.endTime=${endMs};S.browser_fallback_url=${fallback};end;`;
     }
 
     return googleWebUrl;
@@ -1560,11 +1569,90 @@ function onCalendarClick(e) {
         setTimeout(() => $('rdvDate').focus(), 200);
         return;
     }
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    if (isAndroid) {
-        if (e) e.preventDefault();
-        window.location.href = url;
+    // Si la date est choisie, on ne bloque PAS l'événement (pas de e.preventDefault).
+    // Sur Android, le lien intent:// ouvre directement l'application Google Agenda native.
+}
+
+function downloadIcs() {
+    const rawDate = $('rdvDate').value;
+    const rawTime = $('rdvTime').value || '10:00';
+    if (!rawDate) {
+        showToast("⚠️ Choisissez d'abord une date de RDV");
+        closeDevisModal();
+        setTimeout(() => $('rdvDate').focus(), 200);
+        return;
     }
+
+    const [y, m, d] = rawDate.split('-').map(Number);
+    const [h, min] = rawTime.split(':').map(Number);
+    const durationMin = parseInt($('rdvDuration').value || '90', 10);
+    const pad = n => String(n).padStart(2, '0');
+
+    const startDate = new Date(y, m - 1, d, h, min);
+    const endDate = new Date(startDate.getTime() + durationMin * 60 * 1000);
+
+    const formatIcs = (dt) => {
+        return dt.getFullYear() +
+            pad(dt.getMonth() + 1) +
+            pad(dt.getDate()) + 'T' +
+            pad(dt.getHours()) +
+            pad(dt.getMinutes()) + '00';
+    };
+
+    const clientName = $('clientName').value.trim() || 'Client';
+    const clientPhone = $('clientPhone').value.trim();
+
+    const prestaNames = [];
+    Object.entries(state.selected).forEach(([id, qty]) => {
+        const p = PRESTATIONS.find(x => x.id === id);
+        if (p) prestaNames.push(qty > 1 ? `${p.name} (x${qty})` : p.name);
+    });
+    const customN = $('customName').value.trim();
+    if (customN) prestaNames.push(customN);
+    const prestaTitle = prestaNames.length ? prestaNames.join(' + ') : 'RDV Coiffure';
+    const summary = `${clientName} - ${prestaTitle}`;
+
+    const descLines = [];
+    if (clientPhone) descLines.push(`Client : ${clientName} (${clientPhone})`);
+    else descLines.push(`Client : ${clientName}`);
+    descLines.push(`Prestations : ${prestaTitle}`);
+    if (state.depActive && state.depAmount > 0) {
+        descLines.push(`Deplacement : ${eur(state.depAmount)}`);
+    }
+    const { total } = updateTotal();
+    descLines.push(`Total : ${eur(total)}`);
+    const description = descLines.join('\\n');
+    const location = state.depCity ? `A domicile (${state.depCity})` : 'A domicile';
+
+    const icsData = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Les Ciseaux de Melanie//Devis//FR',
+        'CALSCALE:GREGORIAN',
+        'METHOD:PUBLISH',
+        'BEGIN:VEVENT',
+        `UID:rdv-${Date.now()}@ciseauxdemelanie.fr`,
+        `DTSTAMP:${formatIcs(new Date())}Z`,
+        `DTSTART:${formatIcs(startDate)}`,
+        `DTEND:${formatIcs(endDate)}`,
+        `SUMMARY:${summary}`,
+        `DESCRIPTION:${description}`,
+        `LOCATION:${location}`,
+        'STATUS:CONFIRMED',
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.setAttribute('download', `RDV_${clientName.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+    showToast("📅 Fichier RDV téléchargé !");
 }
 
 function onShareAction(type) {
