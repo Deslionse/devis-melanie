@@ -1784,7 +1784,6 @@ function getGoogleCalendarUrl() {
         descLines.push(`📍 Secteur : ${state.depCity}`);
     }
 
-    const { total } = updateTotal();
     descLines.push(`\n💰 Total devis : ${eur(total)}`);
 
     const details = descLines.join('\n');
@@ -1870,7 +1869,6 @@ function downloadIcs() {
     } else if (state.depCity) {
         descLines.push(`Secteur : ${state.depCity}`);
     }
-    const { total } = updateTotal();
     descLines.push(`Total : ${eur(total)}`);
     const description = descLines.join('\\n');
     const location = state.clientAddress || (state.depCity ? `A domicile (${state.depCity})` : 'A domicile');
