@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Devis Rapide V2 - Les Ciseaux de Mélanie</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Devis Mélanie V2">
+<meta name="theme-color" content="#fffaf2">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23fffaf2'/><circle cx='50' cy='50' r='38' fill='%23f9e4e9'/><path d='M50 20 C55 35 65 45 80 50 C65 55 55 65 50 80 C45 65 35 55 20 50 C35 45 45 35 50 20Z' fill='%23b8892b'/><circle cx='50' cy='50' r='10' fill='%23fff6d8'/></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23fffaf2'/><circle cx='50' cy='50' r='38' fill='%23f9e4e9'/><path d='M50 20 C55 35 65 45 80 50 C65 55 55 65 50 80 C45 65 35 55 20 50 C35 45 45 35 50 20Z' fill='%23b8892b'/><circle cx='50' cy='50' r='10' fill='%23fff6d8'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --ivory: #fffaf2;
+    --blush: #f9e4e9;
+    --rose: #b8546e;
+    --rose-soft: #f4c6d1;
+    --gold: #b8892b;
+    --gold-light: #e8cb7a;
+    --gold-dark: #8a6416;
+    --text: #4a3b32;
+    --text-light: #7a6a5c;
+    --line: #ecd9a8;
+    --card: rgba(255, 253, 248, 0.96);
+    --gold-grad: linear-gradient(135deg, #9c7220 0%, #e8cb7a 38%, #b8892b 62%, #e3c46c 100%);
+    --shadow: 0 6px 20px rgba(138, 100, 22, 0.08);
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: 'Lato', sans-serif;
+    color: var(--text);
+    margin: 0;
+    padding: 16px 12px 110px;
+    min-height: 100vh;
+    background-color: var(--ivory);
+    background-image:
+        radial-gradient(circle at 10% 8%, rgba(244, 198, 209, 0.4), transparent 35%),
+        radial-gradient(circle at 90% 90%, rgba(232, 203, 122, 0.25), transparent 38%),
+        radial-gradient(circle at 85% 15%, rgba(249, 228, 233, 0.5), transparent 30%);
+    background-attachment: fixed;
+}
+.container { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+h1, h2, h3 { font-family: 'Playfair Display', serif; margin: 0; }
+
+/* En-tête */
+header { text-align: center; padding: 6px 0 12px; }
+.logo-flower { width: 44px; height: 44px; }
+.gold-text {
+    background: var(--gold-grad);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent; color: transparent;
+}
+h1 { font-size: 1.85rem; letter-spacing: 0.5px; margin-top: 2px; font-weight: 700; }
+.subtitle { color: var(--text-light); font-style: italic; font-family: 'Playfair Display', serif; font-size: 0.95em; margin: 3px 0 0; }
+.ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 10px auto; max-width: 260px; }
+.ornament::before, .ornament::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+.ornament svg { width: 18px; height: 18px; }
+
+/* Carte globale */
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    padding: 16px;
+    margin-bottom: 14px;
+    position: relative;
+}
+.card h2 {
+    font-size: 1.15em;
+    color: var(--gold-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Infos client */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); }
+.input-text {
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 0.95em;
+    font-family: inherit;
+    color: var(--text);
+    background: #fff;
+    outline: none;
+    transition: border-color .2s;
+}
+.input-text:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(184, 84, 110, 0.12); }
+.quick-chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; }
+.chip-btn {
+    padding: 3px 9px;
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-size: 0.72em;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+}
+.chip-btn:hover, .chip-btn:active {
+    background: var(--gold-grad);
+    color: #3b2a14;
+    border-color: var(--gold-dark);
+}
+
+/* Recherche */
+.search-box { position: relative; margin-bottom: 14px; }
+.search-input {
+    width: 100%;
+    padding: 11px 16px 11px 40px;
+    border: 1px solid var(--gold);
+    border-radius: 25px;
+    font-size: 0.95em;
+    font-family: inherit;
+    background: #fff;
+    outline: none;
+}
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; opacity: 0.5; }
+
+/* Onglets Catégories */
+.cat-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    margin-bottom: 14px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-btn {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background: #fffdf8;
+    color: var(--text-light);
+    font-weight: 700;
+    font-size: 0.82em;
+    white-space: nowrap;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .2s;
+}
+.cat-btn.active {
+    background: var(--gold-grad);
+    color: #3b2a14;
+    border-color: var(--gold-dark);
+    box-shadow: 0 3px 10px rgba(184, 137, 43, 0.25);
+}
+
+/* Liste des prestations */
+.presta-list { display: grid; gap: 8px; }
+.presta-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1px solid #f1e6c8;
+    border-radius: 14px;
+    transition: all .2s;
+    user-select: none;
+}
+.presta-item.selected {
+    background: #fff8f9;
+    border-color: var(--rose-soft);
+    box-shadow: 0 2px 8px rgba(184, 84, 110, 0.12);
+}
+.presta-info { flex: 1; padding-right: 12px; }
+.presta-name { font-weight: 700; font-size: 0.92em; line-height: 1.3; }
+.presta-cat { font-size: 0.72em; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+.presta-price-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 10px;
+    gap: 2px;
+}
+.starting-tag {
+    font-size: 0.62em;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--rose);
+    font-weight: 700;
+}
+.price-input-box {
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 3px 6px;
+    transition: all .2s;
+}
+.price-input-box:focus-within {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 2px rgba(184, 84, 110, 0.15);
+    background: #fff8f9;
+}
+.presta-price-input {
+    width: 48px;
+    border: none;
+    background: transparent;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05em;
+    font-weight: 700;
+    color: var(--gold-dark);
+    text-align: right;
+    outline: none;
+    padding: 0;
+}
+.presta-price-input::-webkit-outer-spin-button,
+.presta-price-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.presta-price-input[type=number] {
+    -moz-appearance: textfield;
+}
+.eur-sym {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05em;
+    font-weight: 700;
+    color: var(--gold-dark);
+    margin-left: 2px;
+}
+
+/* Compteur quantité / sélection */
+.qty-ctrl { display: flex; align-items: center; gap: 8px; }
+.btn-qty {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: #fffaf2;
+    color: var(--gold-dark);
+    font-size: 1.1em;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform .1s, background .2s;
+}
+.btn-qty:active { transform: scale(0.9); }
+.btn-qty.plus { background: var(--gold-grad); color: #3b2a14; border-color: var(--gold-dark); }
+.qty-val { font-weight: 700; min-width: 18px; text-align: center; font-size: 0.95em; color: var(--rose); }
+
+/* Déplacement & Options */
+.toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 8px;
+}
+.toggle-label { font-size: 0.9em; font-weight: 700; }
+.toggle-sub { font-size: 0.75em; color: var(--text-light); }
+.toggle-switch { position: relative; width: 48px; height: 26px; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; inset: 0;
+    background-color: #ddd; border-radius: 34px; transition: .3s;
+}
+.slider::before {
+    position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+    background-color: white; border-radius: 50%; transition: .3s;
+}
+input:checked + .slider { background-color: var(--rose); }
+input:checked + .slider::before { transform: translateX(22px); }
+
+.dep-price-box {
+    display: none;
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #fff8f9;
+    border: 1px dashed var(--rose-soft);
+    border-radius: 12px;
+}
+.dep-price-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+/* Moyens de paiement */
+.payment-pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.pay-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all .2s;
+}
+.pay-pill.active {
+    background: #fbf3d9;
+    color: var(--gold-dark);
+    border-color: var(--gold);
+}
+
+/* Barre flottante du bas */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 253, 248, 0.98);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -4px 20px rgba(138, 100, 22, 0.12);
+    z-index: 100;
+}
+.bottom-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+.total-box { display: flex; flex-direction: column; }
+.total-label { font-size: 0.72em; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); font-weight: 700; }
+.total-amount { font-family: 'Playfair Display', serif; font-size: 1.8em; font-weight: 700; color: var(--gold-dark); line-height: 1; }
+.total-count { font-size: 0.75em; color: var(--text-light); margin-top: 2px; }
+
+.btn-cta {
+    background: var(--gold-grad);
+    color: #3b2a14;
+    border: 1px solid var(--gold-dark);
+    border-radius: 30px;
+    padding: 12px 22px;
+    font-weight: 700;
+    font-size: 0.95em;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(184, 137, 43, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+    transition: transform .1s;
+}
+.btn-cta:active { transform: scale(0.97); }
+
+/* Modal Récapitulatif Devis */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(74, 59, 50, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+}
+.modal-content {
+    background: var(--ivory);
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    border-radius: 24px 24px 0 0;
+    padding: 22px 18px calc(24px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.2);
+    animation: slideUp .25s ease-out;
+}
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.btn-close {
+    width: 32px; height: 32px; border-radius: 50%;
+    border: none; background: #eee; font-size: 1.2em;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text);
+}
+
+.devis-sheet {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(138, 100, 22, 0.05);
+    margin-bottom: 16px;
+}
+.devis-sheet-header { text-align: center; border-bottom: 1px dashed var(--line); padding-bottom: 12px; margin-bottom: 12px; }
+.devis-sheet-title { font-family: 'Playfair Display', serif; font-size: 1.3em; font-weight: 700; color: var(--gold-dark); }
+.devis-sheet-sub { font-size: 0.85em; color: var(--text-light); }
+.devis-line { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.9em; }
+.devis-line.bold { font-weight: 700; border-top: 1px solid var(--line); margin-top: 6px; padding-top: 10px; font-size: 1.15em; color: var(--gold-dark); font-family: 'Playfair Display', serif; }
+
+/* Boutons de partage */
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.btn-share {
+    padding: 13px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.92em;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .1s;
+}
+.btn-share:active { transform: scale(0.97); }
+.btn-sms { background: #25D366; color: white; }
+.btn-wa { background: #128C7E; color: white; }
+.btn-calendar {
+    background: #1a73e8;
+    color: white;
+    grid-column: 1 / -1;
+    box-shadow: 0 4px 12px rgba(26, 115, 232, 0.25);
+}
+.btn-calendar:hover { background: #1557b0; }
+.btn-copy { background: #fffdf8; color: var(--text); border: 1px solid var(--line); grid-column: 1 / -1; }
+.btn-reset { background: transparent; color: var(--rose); border: 1px solid var(--rose); padding: 8px; border-radius: 20px; font-size: 0.82em; font-weight: 700; cursor: pointer; }
+
+/* Toast */
+#toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(74, 59, 50, 0.94);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 0.88em;
+    font-weight: 700;
+    z-index: 300;
+    transition: transform .3s ease-out;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+#toast.show { transform: translateX(-50%) translateY(0); }
+
+/* --- FRAIS KILOMÉTRIQUES & COMMUNES --- */
+.dep-badge {
+    font-size: 0.78em;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: #f0ebe4;
+    color: var(--text-light);
+    transition: all 0.2s ease;
+}
+.dep-badge.free {
+    background: #e6f4ea;
+    color: #137333;
+    border: 1px solid #ceead6;
+}
+.dep-badge.extra {
+    background: #fef3d6;
+    color: #8a6416;
+    border: 1px solid #f9e2a8;
+}
+.city-select {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text);
+    background-color: #fff;
+    padding: 11px 14px;
+    width: 100%;
+    font-size: 0.92em;
+}
+.dep-detail-box {
+    margin-top: 12px;
+    padding: 12px 14px;
+    background: #fffdfa;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+.dep-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+/* --- ÉCRAN DE VERROUILLAGE PIN --- */
+body.pin-locked { overflow: hidden; }
+.pin-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(180deg, #fffaf2 0%, #fdf3e7 100%);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.pin-overlay.unlocking {
+    opacity: 0;
+    transform: scale(1.05);
+    pointer-events: none;
+}
+.pin-card {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--line);
+    box-shadow: 0 15px 40px rgba(138, 100, 22, 0.12);
+    border-radius: 28px;
+    padding: 32px 24px 26px;
+    max-width: 340px;
+    width: 100%;
+    text-align: center;
+}
+.pin-dots {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 18px 0 12px;
+}
+.pin-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: transparent;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.pin-dot.filled {
+    background: var(--gold);
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(184, 137, 43, 0.5);
+}
+.pin-dots.shake {
+    animation: pinShake 0.4s ease-in-out;
+}
+@keyframes pinShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
+}
+.pin-error {
+    display: none;
+    color: #b8546e;
+    font-size: 0.85em;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+.pin-keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 260px;
+    margin: 0 auto 16px;
+}
+.pin-key {
+    height: 54px;
+    border-radius: 16px;
+    border: 1px solid rgba(232, 203, 122, 0.45);
+    background: #fffdfa;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45em;
+    font-weight: 700;
+    color: var(--text);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(138, 100, 22, 0.05);
+    transition: all 0.12s ease;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.pin-key:active {
+    background: var(--blush);
+    transform: scale(0.93);
+    border-color: var(--rose);
+}
+.pin-key.pin-action {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.05em;
+    color: var(--text-light);
+    background: #fdfaf6;
+}
+.pin-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82em;
+    color: var(--text-light);
+    cursor: pointer;
+    user-select: none;
+    margin-top: 4px;
+}
+.pin-remember input {
+    accent-color: var(--rose);
+    cursor: pointer;
+}
+.btn-lock {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.88em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-light);
+}
+.btn-lock:active {
+    background: var(--blush);
+}
+</style>
+</head>
+<body>
+
+<!-- Écran de verrouillage PIN sécurisé (Aucun code en clair) -->
+<div id="pinOverlay" class="pin-overlay">
+    <div class="pin-card">
+        <svg class="logo-flower" viewBox="-50 -50 100 100" style="width:52px; height:52px; margin:0 auto 10px;"><use href="#flower" x="-50" y="-50" width="100" height="100"/></svg>
+        <h1 class="gold-text" style="font-size:1.5em; margin-bottom:4px;">Les Ciseaux de Mélanie</h1>
+        <p style="font-size:0.82em; color:var(--text-light); margin-bottom:18px;">Accès sécurisé · Entrez votre code PIN</p>
+
+        <div class="pin-dots" id="pinDots">
+            <span class="pin-dot"></span>
+            <span class="pin-dot"></span>
+            <span class="pin-dot"></span>
+            <span class="pin-dot"></span>
+        </div>
+
+        <div id="pinError" class="pin-error">Code incorrect. Réessayez.</div>
+
+        <div class="pin-keypad">
+            <button type="button" class="pin-key" onclick="pressPin('1')">1</button>
+            <button type="button" class="pin-key" onclick="pressPin('2')">2</button>
+            <button type="button" class="pin-key" onclick="pressPin('3')">3</button>
+            <button type="button" class="pin-key" onclick="pressPin('4')">4</button>
+            <button type="button" class="pin-key" onclick="pressPin('5')">5</button>
+            <button type="button" class="pin-key" onclick="pressPin('6')">6</button>
+            <button type="button" class="pin-key" onclick="pressPin('7')">7</button>
+            <button type="button" class="pin-key" onclick="pressPin('8')">8</button>
+            <button type="button" class="pin-key" onclick="pressPin('9')">9</button>
+            <button type="button" class="pin-key pin-action" onclick="clearPin()">C</button>
+            <button type="button" class="pin-key" onclick="pressPin('0')">0</button>
+            <button type="button" class="pin-key pin-action" onclick="backspacePin()">⌫</button>
+        </div>
+
+        <label class="pin-remember">
+            <input type="checkbox" id="pinRemember" checked />
+            <span>Mémoriser sur cet appareil</span>
+        </label>
+    </div>
+</div>
+
+<!-- Définitions SVG réutilisables -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#9c7220"/>
+            <stop offset="0.4" stop-color="#e8cb7a"/>
+            <stop offset="0.7" stop-color="#b8892b"/>
+            <stop offset="1" stop-color="#e3c46c"/>
+        </linearGradient>
+    </defs>
+    <symbol id="flower" viewBox="-50 -50 100 100">
+        <g fill="#f4c6d1" stroke="#c49a3a" stroke-width="1.3">
+            <ellipse cx="0" cy="-27" rx="12" ry="22"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(45)"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(90)"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(135)"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(180)"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(225)"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(270)"/>
+            <ellipse cx="0" cy="-27" rx="12" ry="22" transform="rotate(315)"/>
+        </g>
+        <circle r="11" fill="url(#goldGrad)" stroke="#8a6416" stroke-width="1"/>
+        <circle r="4" fill="#fff6d8"/>
+    </symbol>
+</svg>
+
+<div class="container">
+    <header>
+        <svg class="logo-flower" viewBox="-50 -50 100 100"><use href="#flower" x="-50" y="-50" width="100" height="100"/></svg>
+        <h1 class="gold-text">Les Ciseaux de Mélanie</h1>
+        <p class="subtitle">Calculateur de devis instantané</p>
+        <div class="ornament" aria-hidden="true"><svg viewBox="-50 -50 100 100"><use href="#flower" x="-50" y="-50" width="100" height="100"/></svg></div>
+    </header>
+
+    <!-- Client & Contexte -->
+    <section class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h2>👤 Client au téléphone</h2>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-reset" onclick="resetAll()">Nouveau devis</button>
+                <button class="btn-lock" onclick="lockApp()" title="Verrouiller l'accès">🔒</button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nom ou Prénom</label>
+                <input type="text" id="clientName" class="input-text" placeholder="Ex: Sophie Martin" oninput="saveDraft()" />
+            </div>
+            <div class="form-group">
+                <label>Téléphone (optionnel)</label>
+                <input type="tel" id="clientPhone" class="input-text" placeholder="Ex: 06 12 34 56 78" oninput="saveDraft()" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>📅 Date du RDV</label>
+                <input type="date" id="rdvDate" class="input-text" oninput="saveDraft()" />
+                <div class="quick-chips">
+                    <button type="button" class="chip-btn" onclick="setQuickDate(0)">Aujourd'hui</button>
+                    <button type="button" class="chip-btn" onclick="setQuickDate(1)">Demain</button>
+                    <button type="button" class="chip-btn" onclick="setQuickDate(2)">Après-demain</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>⏰ Horaire</label>
+                <input type="time" id="rdvTime" class="input-text" oninput="saveDraft()" />
+                <div class="quick-chips">
+                    <button type="button" class="chip-btn" onclick="setQuickTime('09:30')">09h30</button>
+                    <button type="button" class="chip-btn" onclick="setQuickTime('11:00')">11h00</button>
+                    <button type="button" class="chip-btn" onclick="setQuickTime('14:00')">14h00</button>
+                    <button type="button" class="chip-btn" onclick="setQuickTime('16:00')">16h00</button>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:12px; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:14px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3em;">📅</span>
+                <div>
+                    <div style="font-size:0.88em; font-weight:700;">Ajouter à mon Google Agenda</div>
+                    <div style="font-size:0.75em; color:var(--text-light);">Proposer l'ajout au planning après le SMS</div>
+                </div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="calendarToggle" checked onchange="saveDraft()" />
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; padding:6px 14px; background:#fffdf8; border:1px dashed var(--line); border-radius:12px;">
+            <label style="font-size:0.78em; font-weight:700; color:var(--text-light); text-transform:uppercase;">Durée estimée du RDV :</label>
+            <select id="rdvDuration" class="input-text" style="padding:4px 8px; font-size:0.85em; width:auto;" onchange="saveDraft()">
+                <option value="30">30 min</option>
+                <option value="45">45 min</option>
+                <option value="60">1h00</option>
+                <option value="75">1h15</option>
+                <option value="90" selected>1h30 (standard)</option>
+                <option value="105">1h45</option>
+                <option value="120">2h00</option>
+                <option value="135">2h15</option>
+                <option value="150">2h30</option>
+                <option value="165">2h45</option>
+                <option value="180">3h00</option>
+                <option value="195">3h15</option>
+                <option value="210">3h30</option>
+                <option value="225">3h45</option>
+                <option value="240">4h00</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Recherche & Catégories -->
+    <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="search" id="searchInput" class="search-input" placeholder="Rechercher une prestation (ex: ombré, brush, homme...)" oninput="filterPrestas()" />
+    </div>
+
+    <div class="cat-tabs" id="catTabs">
+        <button class="cat-btn active" data-cat="ALL" onclick="filterCat('ALL', this)">Toutes (27)</button>
+        <button class="cat-btn" data-cat="COUPE" onclick="filterCat('COUPE', this)">Coupe & Brush</button>
+        <button class="cat-btn" data-cat="TECH" onclick="filterCat('TECH', this)">Technique</button>
+        <button class="cat-btn" data-cat="FAM" onclick="filterCat('FAM', this)">Famille</button>
+        <button class="cat-btn" data-cat="MARIAGE" onclick="filterCat('MARIAGE', this)">Mariage & Invitées</button>
+    </div>
+
+    <!-- Liste des prestations -->
+    <div class="presta-list" id="prestaList"></div>
+
+    <!-- Déplacement & Frais kilométriques automatiques -->
+    <section class="card" style="margin-top:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h2>🚗 Frais de déplacement</h2>
+            <span id="depBadge" class="dep-badge">10 km offerts</span>
+        </div>
+
+        <div class="form-group" style="margin-bottom:8px;">
+            <label>Commune du rendez-vous (91 & 77)</label>
+            <select id="citySelect" class="input-text city-select" onchange="onCityChange()">
+                <option value="">Sélectionnez la ville du client...</option>
+            </select>
+        </div>
+
+        <!-- Détail & calcul kilométrique automatique -->
+        <div id="depDetailBox" class="dep-detail-box" style="display:none;">
+            <div class="dep-detail-row">
+                <div>
+                    <span id="depCityLabel" style="font-weight:700; color:var(--text);"></span>
+                    <span id="depDistLabel" style="font-size:0.82em; color:var(--text-light); margin-left:6px;"></span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-size:0.85em; color:var(--text-light);">Frais :</span>
+                    <input type="number" id="depAmount" class="input-text" style="width:70px; text-align:right; font-weight:700; font-family:'Playfair Display',serif; color:var(--gold-dark); padding:6px 8px;" value="0" min="0" step="1" oninput="onDepAmountManualChange()" />
+                    <strong>€</strong>
+                </div>
+            </div>
+            <div id="depExplanation" style="font-size:0.78em; color:var(--text-light); margin-top:5px; line-height:1.4;"></div>
+        </div>
+
+        <!-- Saisie personnalisée si "Autre commune" -->
+        <div id="customKmRow" style="display:none; margin-top:10px; padding:10px 12px; background:#fff; border:1px solid var(--line); border-radius:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label style="font-size:0.85em; font-weight:700;">Distance depuis Corbeil :</label>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    <input type="number" id="customKmInput" class="input-text" style="width:75px; text-align:right; padding:6px 8px;" placeholder="Ex: 18" min="0" oninput="onCustomKmChange()" />
+                    <span style="font-size:0.85em; font-weight:700;">km</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prestation sur mesure / Note -->
+    <section class="card">
+        <h2>✨ Supplément ou demande sur-mesure</h2>
+        <div class="form-row">
+            <div class="form-group" style="flex:2;">
+                <label>Description (optionnel)</label>
+                <input type="text" id="customName" class="input-text" placeholder="Ex: Forfait Mariée personnalisé" oninput="updateTotal()" />
+            </div>
+            <div class="form-group" style="flex:1;">
+                <label>Prix (€)</label>
+                <input type="number" id="customPrice" class="input-text" placeholder="0" min="0" oninput="updateTotal()" />
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Barre fixe inférieure -->
+<div class="bottom-bar">
+    <div class="bottom-inner">
+        <div class="total-box">
+            <span class="total-label">Total du devis</span>
+            <span class="total-amount" id="totalDisplay">0 €</span>
+            <span class="total-count" id="countDisplay">0 prestation</span>
+        </div>
+        <button class="btn-cta" onclick="openDevisModal()">
+            <span>Voir & Envoyer</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+    </div>
+</div>
+
+<!-- Modal Récapitulatif -->
+<div class="modal-overlay" id="devisModal" onclick="closeModalOnBg(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 style="font-size:1.3em;" class="gold-text">Récapitulatif du Devis</h3>
+            <button class="btn-close" onclick="closeDevisModal()">✕</button>
+        </div>
+
+        <div class="devis-sheet" id="devisSheet">
+            <div class="devis-sheet-header">
+                <div class="devis-sheet-title">Les Ciseaux de Mélanie</div>
+                <div class="devis-sheet-sub">Coiffure à domicile & Événements</div>
+                <div id="modalClientInfo" style="margin-top:6px; font-weight:700; color:var(--rose);"></div>
+                <div id="modalRdvInfo" style="margin-top:6px; font-weight:700; color:var(--gold-dark); font-size:0.9em;"></div>
+            </div>
+            <div id="modalItemsList"></div>
+            <div class="devis-line bold">
+                <span>TOTAL À RÉGLER</span>
+                <span id="modalTotal">0 €</span>
+            </div>
+        </div>
+
+        <!-- Boutons de partage direct -->
+        <div class="action-grid">
+            <a id="btnSms" class="btn-share btn-sms" href="#" target="_blank" onclick="onShareAction('SMS')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                Envoyer par SMS
+            </a>
+            <a id="btnWa" class="btn-share btn-wa" href="#" target="_blank" onclick="onShareAction('WhatsApp')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.16 8.16 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.188 8.188 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24M8.53 7.33c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02s.87 2.34 1 2.51c.12.16 1.7 2.6 4.12 3.65.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.47-.29-.25-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.55.12-.16.25-.64.79-.78.95-.14.16-.29.18-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.17-.25.25-.42.08-.16.04-.31-.02-.44-.06-.12-.55-1.32-.75-1.81-.2-.48-.4-.41-.55-.42h-.47z"/></svg>
+                WhatsApp
+            </a>
+            <a id="btnCalendar" class="btn-share btn-calendar" href="#" target="_blank" onclick="onCalendarClick(event)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                Ajouter à Google Agenda
+            </a>
+            <button class="btn-share btn-copy" onclick="copyDevisText()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                Copier le texte du devis
+            </button>
+        </div>
+
+        <!-- Notification d'enchaînement Google Agenda après SMS -->
+        <div id="calendarNotice" style="display:none; margin-top:14px; padding:14px; background:#e8f0fe; border:1px solid #1a73e8; border-radius:14px; text-align:center;">
+            <div style="font-weight:700; color:#1a73e8; font-size:0.95em; margin-bottom:4px;">💬 Message envoyé ou en cours !</div>
+            <div style="font-size:0.82em; color:#3c4043; margin-bottom:10px;">Pensez à enregistrer le créneau dans votre agenda :</div>
+            <a id="btnNoticeCalendar" href="#" onclick="onCalendarClick(event)" class="btn-share btn-calendar" style="padding:11px 18px; margin:0 auto; display:inline-flex;">
+                📅 Enregistrer dans Google Agenda
+            </a>
+        </div>
+    </div>
+</div>
+
+<div id="toast">Texte copié !</div>
+
+<script>
+// Grille tarifaire complète fournie par Mélanie
+const PRESTATIONS = [
+    // --- FEMME : COUPE & BRUSHING ---
+    { id: 'f_cb_1', cat: 'COUPE', name: 'Shamp. + Brush (Courts)', price: 20 },
+    { id: 'f_cb_2', cat: 'COUPE', name: 'Shamp. + Brush (Longs)', price: 30 },
+    { id: 'f_cb_3', cat: 'COUPE', name: 'Shamp. + Coupe + Brush (Courts)', price: 30 },
+    { id: 'f_cb_4', cat: 'COUPE', name: 'Shamp. + Coupe + Brush (Longs)', price: 40 },
+    { id: 'f_cb_5', cat: 'COUPE', name: 'Soin', price: 6 },
+    { id: 'f_cb_6', cat: 'COUPE', name: 'Soin Métal Detox', price: 20 },
+
+    // --- FEMME : TECHNIQUE ---
+    { id: 'f_t_1', cat: 'TECH', name: 'Shamp. + Coul. + Brush (Courts)', price: 45, starting: true },
+    { id: 'f_t_2', cat: 'TECH', name: 'Shamp. + Coul. + Brush (Longs)', price: 55, starting: true },
+    { id: 'f_t_3', cat: 'TECH', name: 'Shamp. + Coul. + Coupe + Brush (Courts)', price: 55, starting: true },
+    { id: 'f_t_4', cat: 'TECH', name: 'Shamp. + Coul. + Coupe + Brush (Longs)', price: 65, starting: true },
+    { id: 'f_t_5', cat: 'TECH', name: 'Shamp. + Coul. + Brush+EL (Courts)', price: 65, starting: true },
+    { id: 'f_t_6', cat: 'TECH', name: 'Shamp. + Coul. + Brush+EL (Longs)', price: 75, starting: true },
+    { id: 'f_t_7', cat: 'TECH', name: 'Shamp. + Coul. + Coupe + Brush+EL (Courts)', price: 75, starting: true },
+    { id: 'f_t_8', cat: 'TECH', name: 'Shamp. + Coul. + Coupe + Brush+EL (Longs)', price: 85, starting: true },
+    { id: 'f_t_9', cat: 'TECH', name: 'Patine (Courts)', price: 15, starting: true },
+    { id: 'f_t_10', cat: 'TECH', name: 'Patine (Longs)', price: 25, starting: true },
+    { id: 'f_t_11', cat: 'TECH', name: 'Shamp. + Mèches/Bal. + Brush', price: 65, starting: true },
+    { id: 'f_t_12', cat: 'TECH', name: 'Shamp. + Mèches/Bal. + Coupe + Brush', price: 75, starting: true },
+    { id: 'f_t_13', cat: 'TECH', name: 'Shamp. + Ombré + Patine + Brush', price: 110, starting: true },
+    { id: 'f_t_14', cat: 'TECH', name: 'Shamp. + Ombré + Patine + Coupe + Brush', price: 120, starting: true },
+    { id: 'f_t_15', cat: 'TECH', name: 'Supplément Lissage ou Wavy', price: 10 },
+
+    // --- FAMILLE ---
+    { id: 'fam_1', cat: 'FAM', name: 'Coupe Homme', price: 20 },
+    { id: 'fam_2', cat: 'FAM', name: 'Enfant (-10 ans)', price: 15 },
+    { id: 'fam_3', cat: 'FAM', name: 'Garçon (10-18 ans)', price: 18 },
+    { id: 'fam_4', cat: 'FAM', name: 'Fille (10-18 ans)', price: 25 },
+
+    // --- MARIAGE & INVITÉES ---
+    { id: 'mar_1', cat: 'MARIAGE', name: 'Forfait Mariée (Essais inclus)', price: 0, note: 'Sur devis', starting: true },
+    { id: 'mar_2', cat: 'MARIAGE', name: 'Invitée : Coiffure', price: 30 },
+    { id: 'mar_3', cat: 'MARIAGE', name: 'Invitée : Maquillage', price: 35 }
+];
+
+const CAT_LABELS = {
+    COUPE: 'Coupe & Brushing',
+    TECH: 'Technique',
+    FAM: 'Famille',
+    MARIAGE: 'Mariage & Invitées'
+};
+
+// Liste des communes (Essonne 91 & Seine-et-Marne 77 autour de Lieusaint/Melun)
+// Distance routière réelle depuis le centre de Corbeil-Essonnes
+const CITIES = [
+    // --- ZONE CORBEIL & PROXIMITÉ (≤ 10 km : OFFERT 0 €) ---
+    { name: "Corbeil-Essonnes", dpt: "91", dist: 0, group: "PROX" },
+    { name: "Saint-Germain-lès-Corbeil", dpt: "91", dist: 4, group: "PROX" },
+    { name: "Villabé", dpt: "91", dist: 4, group: "PROX" },
+    { name: "Étiolles", dpt: "91", dist: 4, group: "PROX" },
+    { name: "Évry-Courcouronnes", dpt: "91", dist: 5, group: "PROX" },
+    { name: "Saint-Pierre-du-Perray", dpt: "91", dist: 5, group: "PROX" },
+    { name: "Saintry-sur-Seine", dpt: "91", dist: 5, group: "PROX" },
+    { name: "Lisses", dpt: "91", dist: 5, group: "PROX" },
+    { name: "Ormoy", dpt: "91", dist: 5, group: "PROX" },
+    { name: "Soisy-sur-Seine", dpt: "91", dist: 6, group: "PROX" },
+    { name: "Le Coudray-Montceaux", dpt: "91", dist: 7, group: "PROX" },
+    { name: "Morsang-sur-Seine", dpt: "91", dist: 7, group: "PROX" },
+    { name: "Nandy", dpt: "77", dist: 7, group: "PROX" },
+    { name: "Ris-Orangis", dpt: "91", dist: 8, group: "PROX" },
+    { name: "Bondoufle", dpt: "91", dist: 8, group: "PROX" },
+    { name: "Mennecy", dpt: "91", dist: 8, group: "PROX" },
+    { name: "Seine-Port", dpt: "77", dist: 8, group: "PROX" },
+    { name: "Saint-Fargeau-Ponthierry", dpt: "77", dist: 9, group: "PROX" },
+    { name: "Savigny-le-Temple", dpt: "77", dist: 9, group: "PROX" },
+    { name: "Vert-le-Petit", dpt: "91", dist: 9, group: "PROX" },
+    { name: "Fontenay-le-Vicomte", dpt: "91", dist: 9, group: "PROX" },
+    { name: "Fleury-Mérogis", dpt: "91", dist: 10, group: "PROX" },
+    { name: "Vert-le-Grand", dpt: "91", dist: 10, group: "PROX" },
+    { name: "Écharcon", dpt: "91", dist: 10, group: "PROX" },
+
+    // --- SEINE-ET-MARNE (77) : LIEUSAINT, MELUN & ALENTOURS (> 10 km) ---
+    { name: "Boissise-le-Roi", dpt: "77", dist: 11, group: "77" },
+    { name: "Lieusaint", dpt: "77", dist: 11, group: "77" },
+    { name: "Cesson", dpt: "77", dist: 12, group: "77" },
+    { name: "Moissy-Cramayel", dpt: "77", dist: 12, group: "77" },
+    { name: "Le Mée-sur-Seine", dpt: "77", dist: 13, group: "77" },
+    { name: "Vert-Saint-Denis", dpt: "77", dist: 13, group: "77" },
+    { name: "Combs-la-Ville", dpt: "77", dist: 14, group: "77" },
+    { name: "Dammarie-lès-Lys", dpt: "77", dist: 15, group: "77" },
+    { name: "Melun", dpt: "77", dist: 16, group: "77" },
+    { name: "Évry-Grégy-sur-Yerre", dpt: "77", dist: 18, group: "77" },
+    { name: "Brie-Comte-Robert", dpt: "77", dist: 19, group: "77" },
+    { name: "Vaux-le-Pénil", dpt: "77", dist: 20, group: "77" },
+    { name: "Barbizon", dpt: "77", dist: 20, group: "77" },
+    { name: "Servon", dpt: "77", dist: 21, group: "77" },
+    { name: "Tournan-en-Brie", dpt: "77", dist: 30, group: "77" },
+    { name: "Fontainebleau", dpt: "77", dist: 32, group: "77" },
+
+    // --- ESSONNE (91) : HORS RAYON 10 KM (> 10 km) ---
+    { name: "Grigny", dpt: "91", dist: 11, group: "91" },
+    { name: "Draveil", dpt: "91", dist: 11, group: "91" },
+    { name: "Chevannes", dpt: "91", dist: 11, group: "91" },
+    { name: "Brétigny-sur-Orge", dpt: "91", dist: 13, group: "91" },
+    { name: "Viry-Châtillon", dpt: "91", dist: 13, group: "91" },
+    { name: "Ballancourt-sur-Essonne", dpt: "91", dist: 13, group: "91" },
+    { name: "Montgeron", dpt: "91", dist: 14, group: "91" },
+    { name: "Vigneux-sur-Seine", dpt: "91", dist: 14, group: "91" },
+    { name: "Sainte-Geneviève-des-Bois", dpt: "91", dist: 14, group: "91" },
+    { name: "Juvisy-sur-Orge", dpt: "91", dist: 15, group: "91" },
+    { name: "Saint-Michel-sur-Orge", dpt: "91", dist: 15, group: "91" },
+    { name: "Marolles-en-Hurepoix", dpt: "91", dist: 15, group: "91" },
+    { name: "Itteville", dpt: "91", dist: 15, group: "91" },
+    { name: "Champcueil", dpt: "91", dist: 15, group: "91" },
+    { name: "Athis-Mons", dpt: "91", dist: 16, group: "91" },
+    { name: "Savigny-sur-Orge", dpt: "91", dist: 16, group: "91" },
+    { name: "Épinay-sur-Orge", dpt: "91", dist: 16, group: "91" },
+    { name: "Brunoy", dpt: "91", dist: 16, group: "91" },
+    { name: "Yerres", dpt: "91", dist: 17, group: "91" },
+    { name: "Morsang-sur-Orge", dpt: "91", dist: 17, group: "91" },
+    { name: "La Ferté-Alais", dpt: "91", dist: 18, group: "91" },
+    { name: "Longjumeau", dpt: "91", dist: 18, group: "91" },
+    { name: "Chilly-Mazarin", dpt: "91", dist: 19, group: "91" },
+    { name: "Arpajon", dpt: "91", dist: 20, group: "91" },
+    { name: "Massy", dpt: "91", dist: 24, group: "91" },
+    { name: "Palaiseau", dpt: "91", dist: 26, group: "91" },
+    { name: "Milly-la-Forêt", dpt: "91", dist: 25, group: "91" }
+];
+
+const state = {
+    selected: {}, // { [id]: qty }
+    customPrices: {}, // { [id]: prix personnalisé }
+    cat: 'ALL',
+    search: '',
+    depCity: '',
+    depDist: 0,
+    depActive: false,
+    depAmount: 0
+};
+
+const $ = id => document.getElementById(id);
+const eur = n => (Math.round(n * 100) / 100).toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' €';
+
+function getPrestaPrice(p) {
+    if (state.customPrices && state.customPrices[p.id] !== undefined) {
+        return state.customPrices[p.id];
+    }
+    return p.price;
+}
+
+function renderList() {
+    const list = $('prestaList');
+    list.innerHTML = '';
+
+    const q = state.search.toLowerCase().trim();
+    const filtered = PRESTATIONS.filter(p => {
+        const matchCat = state.cat === 'ALL' || p.cat === state.cat;
+        const matchSearch = !q || p.name.toLowerCase().includes(q) || CAT_LABELS[p.cat].toLowerCase().includes(q);
+        return matchCat && matchSearch;
+    });
+
+    if (!filtered.length) {
+        list.innerHTML = '<div style="text-align:center; padding:30px; color:var(--text-light); font-style:italic;">Aucune prestation trouvée.</div>';
+        return;
+    }
+
+    filtered.forEach(p => {
+        const qty = state.selected[p.id] || 0;
+        const currentP = getPrestaPrice(p);
+        const item = document.createElement('div');
+        item.className = 'presta-item' + (qty > 0 ? ' selected' : '');
+        item.id = `item-${p.id}`;
+        item.innerHTML = `
+            <div class="presta-info">
+                <div class="presta-name">${p.name}</div>
+                <div class="presta-cat">${CAT_LABELS[p.cat]} ${p.note ? '· ' + p.note : ''}</div>
+            </div>
+            <div class="presta-price-wrap">
+                ${p.starting ? '<span class="starting-tag">À partir de</span>' : ''}
+                <div class="price-input-box" title="Modifier le tarif">
+                    <input type="number"
+                           id="price-${p.id}"
+                           class="presta-price-input"
+                           value="${currentP}"
+                           min="0"
+                           step="1"
+                           onfocus="this.select()"
+                           oninput="onPriceChange('${p.id}', this.value)" />
+                    <span class="eur-sym">€</span>
+                </div>
+            </div>
+            <div class="qty-ctrl" id="qty-${p.id}">
+                ${qty > 0 ? `<button type="button" class="btn-qty" onclick="changeQty('${p.id}', -1)">−</button>` : ''}
+                ${qty > 0 ? `<span class="qty-val">${qty}</span>` : ''}
+                <button type="button" class="btn-qty plus" onclick="changeQty('${p.id}', 1)">+</button>
+            </div>
+        `;
+        list.appendChild(item);
+    });
+}
+
+function onPriceChange(id, val) {
+    const n = parseFloat(val);
+    if (!isNaN(n) && n >= 0) {
+        state.customPrices[id] = n;
+    } else {
+        delete state.customPrices[id];
+    }
+    // Si la prestation n'était pas sélectionnée, on l'ajoute automatiquement (quantité 1)
+    if (!state.selected[id]) {
+        state.selected[id] = 1;
+        const itemEl = $(`item-${id}`);
+        if (itemEl) itemEl.classList.add('selected');
+        const qtyCtrl = $(`qty-${id}`);
+        if (qtyCtrl) {
+            qtyCtrl.innerHTML = `
+                <button type="button" class="btn-qty" onclick="changeQty('${id}', -1)">−</button>
+                <span class="qty-val">1</span>
+                <button type="button" class="btn-qty plus" onclick="changeQty('${id}', 1)">+</button>
+            `;
+        }
+    }
+    updateTotal();
+    saveDraft();
+}
+
+function changeQty(id, delta) {
+    const current = state.selected[id] || 0;
+    const next = Math.max(0, current + delta);
+    if (next === 0) delete state.selected[id];
+    else state.selected[id] = next;
+    renderList();
+    updateTotal();
+    saveDraft();
+}
+
+function filterCat(cat, btn) {
+    state.cat = cat;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderList();
+}
+
+function filterPrestas() {
+    state.search = $('searchInput').value;
+    renderList();
+}
+
+function initCitySelect() {
+    const sel = $('citySelect');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">Sélectionnez la ville du client...</option>';
+
+    const groupProx = document.createElement('optgroup');
+    groupProx.label = "📍 Rayon ≤ 10 km (Déplacement offert 0 €)";
+
+    const group77 = document.createElement('optgroup');
+    group77.label = "📍 Seine-et-Marne 77 (Lieusaint, Melun, etc.)";
+
+    const group91 = document.createElement('optgroup');
+    group91.label = "📍 Essonne 91 (Au-delà de 10 km)";
+
+    CITIES.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        const extra = Math.max(0, c.dist - 10);
+        const costTxt = extra > 0 ? `+${extra} € (${extra} km supp.)` : 'Offert (0 €)';
+        opt.textContent = `${c.name} (${c.dpt}) · ${c.dist} km · ${costTxt}`;
+        if (c.group === 'PROX') groupProx.appendChild(opt);
+        else if (c.group === '77') group77.appendChild(opt);
+        else group91.appendChild(opt);
+    });
+
+    sel.appendChild(groupProx);
+    sel.appendChild(group77);
+    sel.appendChild(group91);
+
+    const customOpt = document.createElement('option');
+    customOpt.value = 'CUSTOM';
+    customOpt.textContent = "➕ Autre commune (calculer avec les km)";
+    sel.appendChild(customOpt);
+}
+
+function onCityChange() {
+    const val = $('citySelect').value;
+    const detailBox = $('depDetailBox');
+    const customRow = $('customKmRow');
+    const badge = $('depBadge');
+
+    if (!val) {
+        state.depCity = '';
+        state.depDist = 0;
+        state.depActive = false;
+        state.depAmount = 0;
+        $('depAmount').value = 0;
+        detailBox.style.display = 'none';
+        customRow.style.display = 'none';
+        badge.className = 'dep-badge';
+        badge.textContent = '10 km offerts';
+        updateTotal();
+        saveDraft();
+        return;
+    }
+
+    if (val === 'CUSTOM') {
+        state.depCity = 'Autre commune';
+        customRow.style.display = 'block';
+        detailBox.style.display = 'block';
+        $('depCityLabel').textContent = 'Autre commune';
+        onCustomKmChange();
+        return;
+    }
+
+    customRow.style.display = 'none';
+    const city = CITIES.find(c => c.name === val);
+    if (!city) return;
+
+    state.depCity = `${city.name} (${city.dpt})`;
+    state.depDist = city.dist;
+
+    const extraKm = Math.max(0, city.dist - 10);
+    const amount = extraKm * 1;
+
+    state.depAmount = amount;
+    state.depActive = (amount > 0);
+    $('depAmount').value = amount;
+
+    detailBox.style.display = 'block';
+    $('depCityLabel').textContent = `${city.name} (${city.dpt})`;
+    $('depDistLabel').textContent = `· ${city.dist} km de Corbeil`;
+
+    if (amount === 0) {
+        badge.className = 'dep-badge free';
+        badge.textContent = '✅ Déplacement offert (≤ 10 km)';
+        $('depExplanation').textContent = `Trajet de ${city.dist} km inclus dans le rayon offert de 10 km. Aucun supplément.`;
+    } else {
+        badge.className = 'dep-badge extra';
+        badge.textContent = `🚗 +${amount} € (${extraKm} km supp.)`;
+        $('depExplanation').textContent = `Distance : ${city.dist} km de Corbeil. 10 km offerts + ${extraKm} km à 1 €/km = ${amount} €.`;
+    }
+
+    updateTotal();
+    saveDraft();
+}
+
+function onCustomKmChange() {
+    const km = parseFloat($('customKmInput').value) || 0;
+    state.depDist = km;
+    const extraKm = Math.max(0, km - 10);
+    const amount = extraKm * 1;
+
+    state.depAmount = amount;
+    state.depActive = (amount > 0);
+    $('depAmount').value = amount;
+
+    const badge = $('depBadge');
+    $('depDistLabel').textContent = km > 0 ? `· ${km} km de Corbeil` : '';
+
+    if (amount === 0) {
+        badge.className = 'dep-badge free';
+        badge.textContent = '✅ Déplacement offert (≤ 10 km)';
+        $('depExplanation').textContent = km > 0 ? `Trajet de ${km} km inclus dans le rayon offert de 10 km.` : 'Indiquez la distance en kilomètres.';
+    } else {
+        badge.className = 'dep-badge extra';
+        badge.textContent = `🚗 +${amount} € (${extraKm} km supp.)`;
+        $('depExplanation').textContent = `Distance : ${km} km. 10 km offerts + ${extraKm} km à 1 €/km = ${amount} €.`;
+    }
+
+    updateTotal();
+    saveDraft();
+}
+
+function onDepAmountManualChange() {
+    const val = parseFloat($('depAmount').value) || 0;
+    state.depAmount = val;
+    state.depActive = (val > 0);
+    updateTotal();
+    saveDraft();
+}
+
+function updateTotal() {
+    let total = 0;
+    let count = 0;
+
+    Object.entries(state.selected).forEach(([id, qty]) => {
+        const p = PRESTATIONS.find(x => x.id === id);
+        if (p) {
+            const price = getPrestaPrice(p);
+            total += price * qty;
+            count += qty;
+        }
+    });
+
+    if (state.depActive && state.depAmount > 0) {
+        total += state.depAmount;
+    }
+
+    const customP = parseFloat($('customPrice').value) || 0;
+    if (customP > 0) {
+        total += customP;
+        count += 1;
+    }
+
+    $('totalDisplay').textContent = eur(total);
+    $('countDisplay').textContent = count + (count > 1 ? ' prestations' : ' prestation');
+    return { total, count };
+}
+
+function setQuickDate(daysAhead) {
+    const d = new Date();
+    d.setDate(d.getDate() + daysAhead);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    $('rdvDate').value = `${yyyy}-${mm}-${dd}`;
+    saveDraft();
+}
+
+function setQuickTime(timeStr) {
+    $('rdvTime').value = timeStr;
+    saveDraft();
+}
+
+function formatRdvLabel() {
+    const rawDate = $('rdvDate').value;
+    const rawTime = $('rdvTime').value;
+    if (!rawDate && !rawTime) return null;
+    let label = '';
+    if (rawDate) {
+        const parts = rawDate.split('-');
+        if (parts.length === 3) {
+            const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+            const formatted = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            label += formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        }
+    }
+    if (rawTime) {
+        const timeClean = rawTime.replace(':', 'h');
+        label += (label ? ' à ' : '') + timeClean;
+    }
+    return label;
+}
+
+function generateDevisText() {
+    const name = $('clientName').value.trim() || 'Madame / Monsieur';
+    const lines = [];
+
+    lines.push(`✨ *DEVIS - Les Ciseaux de Mélanie* ✨`);
+    lines.push(`Coiffure à domicile & Événements\n`);
+    lines.push(`Bonjour ${name}, voici le détail de votre devis :`);
+
+    const rdv = formatRdvLabel();
+    if (rdv) {
+        lines.push(`🗓 Rendez-vous convenu : *${rdv}*`);
+    } else {
+        lines.push(`🗓 Rendez-vous : *date et horaire à convenir ensemble*`);
+    }
+
+    lines.push('');
+
+    Object.entries(state.selected).forEach(([id, qty]) => {
+        const p = PRESTATIONS.find(x => x.id === id);
+        if (p) {
+            const price = getPrestaPrice(p);
+            const label = qty > 1 ? `${p.name} (×${qty})` : p.name;
+            const priceDisplay = price > 0 ? eur(price * qty) : (p.note || 'Sur devis');
+            lines.push(`• ${label} : ${priceDisplay}`);
+        }
+    });
+
+    const customN = $('customName').value.trim();
+    const customP = parseFloat($('customPrice').value) || 0;
+    if (customP > 0) {
+        lines.push(`• ${customN || 'Prestation sur-mesure'} : ${eur(customP)}`);
+    }
+
+    if (state.depActive && state.depAmount > 0) {
+        const cityTxt = state.depCity ? ` (${state.depCity})` : '';
+        lines.push(`• Déplacement${cityTxt} : ${eur(state.depAmount)}`);
+    }
+
+    const { total } = updateTotal();
+    lines.push(`\n👉 *TOTAL : ${eur(total)}*`);
+    if (rdv) {
+        lines.push(`\nJe reste à votre disposition si besoin d'ajustements. À très bientôt pour votre rendez-vous ! 🌸`);
+    } else {
+        lines.push(`\nJe reste à votre disposition pour convenir de la date et de l'horaire. À très bientôt ! 🌸`);
+    }
+
+    return lines.join('\n');
+}
+
+function openDevisModal() {
+    const { total, count } = updateTotal();
+    if (total === 0 && count === 0) {
+        showToast("Veuillez sélectionner au moins une prestation");
+        return;
+    }
+
+    const name = $('clientName').value.trim();
+    $('modalClientInfo').textContent = name ? `Client : ${name}` : '';
+    const rdv = formatRdvLabel();
+    $('modalRdvInfo').textContent = rdv ? `🗓 RDV : ${rdv}` : '🗓 Date et horaire à convenir';
+
+    const itemsContainer = $('modalItemsList');
+    itemsContainer.innerHTML = '';
+
+    Object.entries(state.selected).forEach(([id, qty]) => {
+        const p = PRESTATIONS.find(x => x.id === id);
+        if (p) {
+            const price = getPrestaPrice(p);
+            const line = document.createElement('div');
+            line.className = 'devis-line';
+            line.innerHTML = `<span>${p.name} ${qty > 1 ? '<small style="color:var(--rose)">×' + qty + '</small>' : ''}</span><b>${price > 0 ? eur(price * qty) : (p.note || 'Sur devis')}</b>`;
+            itemsContainer.appendChild(line);
+        }
+    });
+
+    const customN = $('customName').value.trim();
+    const customP = parseFloat($('customPrice').value) || 0;
+    if (customP > 0) {
+        const line = document.createElement('div');
+        line.className = 'devis-line';
+        line.innerHTML = `<span>${customN || 'Prestation sur-mesure'}</span><b>${eur(customP)}</b>`;
+        itemsContainer.appendChild(line);
+    }
+
+    if (state.depActive && state.depAmount > 0) {
+        const line = document.createElement('div');
+        line.className = 'devis-line';
+        const cityTxt = state.depCity ? ` (${state.depCity})` : '';
+        line.innerHTML = `<span>Déplacement${cityTxt}</span><b>${eur(state.depAmount)}</b>`;
+        itemsContainer.appendChild(line);
+    }
+
+    $('modalTotal').textContent = eur(total);
+
+    // Préparation liens SMS & WhatsApp
+    const text = generateDevisText();
+    const phone = $('clientPhone').value.replace(/[^0-9+]/g, '');
+    const encoded = encodeURIComponent(text);
+
+    // SMS : support universel iOS/Android
+    const smsHref = /iPad|iPhone|iPod/.test(navigator.userAgent)
+        ? `sms:${phone}&body=${encoded}`
+        : `sms:${phone}?body=${encoded}`;
+    $('btnSms').href = smsHref;
+
+    // WhatsApp
+    const waHref = phone ? `https://wa.me/${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
+    $('btnWa').href = waHref;
+
+    // Google Calendar
+    $('calendarNotice').style.display = 'none';
+    const calUrl = getGoogleCalendarUrl();
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) {
+        $('btnCalendar').removeAttribute('target');
+        $('btnNoticeCalendar').removeAttribute('target');
+    } else {
+        $('btnCalendar').setAttribute('target', '_blank');
+        $('btnNoticeCalendar').setAttribute('target', '_blank');
+    }
+    $('btnCalendar').href = calUrl || '#';
+    $('btnNoticeCalendar').href = calUrl || '#';
+
+    $('devisModal').style.display = 'flex';
+}
+
+function getGoogleCalendarUrl() {
+    const rawDate = $('rdvDate').value;
+    const rawTime = $('rdvTime').value || '10:00';
+    if (!rawDate) return null;
+
+    const [y, m, d] = rawDate.split('-').map(Number);
+    const [h, min] = rawTime.split(':').map(Number);
+    const durationMin = parseInt($('rdvDuration').value || '90', 10);
+
+    const pad = n => String(n).padStart(2, '0');
+    const startStr = `${y}${pad(m)}${pad(d)}T${pad(h)}${pad(min)}00`;
+
+    const startDate = new Date(y, m - 1, d, h, min);
+    const endDate = new Date(startDate.getTime() + durationMin * 60 * 1000);
+    const endStr = `${endDate.getFullYear()}${pad(endDate.getMonth() + 1)}${pad(endDate.getDate())}T${pad(endDate.getHours())}${pad(endDate.getMinutes())}00`;
+
+    const clientName = $('clientName').value.trim() || 'Client';
+    const clientPhone = $('clientPhone').value.trim();
+
+    // Prestations pour le titre de l'événement (Nom du client - Prestation)
+    const prestaNames = [];
+    Object.entries(state.selected).forEach(([id, qty]) => {
+        const p = PRESTATIONS.find(x => x.id === id);
+        if (p) prestaNames.push(qty > 1 ? `${p.name} (x${qty})` : p.name);
+    });
+    const customN = $('customName').value.trim();
+    if (customN) prestaNames.push(customN);
+
+    const prestaTitle = prestaNames.length ? prestaNames.join(' + ') : 'RDV Coiffure';
+    const title = `${clientName} - ${prestaTitle}`;
+
+    const descLines = [];
+    if (clientPhone) descLines.push(`📞 Client : ${clientName} (${clientPhone})`);
+    else descLines.push(`📞 Client : ${clientName}`);
+    descLines.push(`✨ Rendez-vous à domicile ✨\n`);
+    descLines.push(`Prestations prévues :`);
+
+    Object.entries(state.selected).forEach(([id, qty]) => {
+        const p = PRESTATIONS.find(x => x.id === id);
+        if (p) {
+            const price = getPrestaPrice(p);
+            descLines.push(`• ${p.name} ${qty > 1 ? '(x' + qty + ')' : ''} : ${price > 0 ? eur(price * qty) : 'Sur devis'}`);
+        }
+    });
+
+    const customP = parseFloat($('customPrice').value) || 0;
+    if (customP > 0) descLines.push(`• ${customN || 'Prestation sur-mesure'} : ${eur(customP)}`);
+
+    if (state.depActive && state.depAmount > 0) {
+        const cityTxt = state.depCity ? ` (${state.depCity})` : '';
+        descLines.push(`• Déplacement${cityTxt} : ${eur(state.depAmount)}`);
+    }
+
+    const { total } = updateTotal();
+    descLines.push(`\n💰 Total devis : ${eur(total)}`);
+
+    const details = descLines.join('\n');
+    const location = state.depCity ? `À domicile (${state.depCity})` : 'À domicile';
+
+    const googleWebUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startStr}/${endStr}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(location)}`;
+
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) {
+        const beginMs = startDate.getTime();
+        const endMs = endDate.getTime();
+        const fallback = encodeURIComponent(googleWebUrl);
+        // Ouvre directement l'application Agenda native sur Android / Xiaomi
+        return `intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event;S.title=${encodeURIComponent(title)};S.description=${encodeURIComponent(details)};S.eventLocation=${encodeURIComponent(location)};l.beginTime=${beginMs};l.endTime=${endMs};S.browser_fallback_url=${fallback};end;`;
+    }
+
+    return googleWebUrl;
+}
+
+function onCalendarClick(e) {
+    const url = getGoogleCalendarUrl();
+    if (!url) {
+        if (e) e.preventDefault();
+        showToast("⚠️ Choisissez d'abord une date de RDV");
+        closeDevisModal();
+        setTimeout(() => $('rdvDate').focus(), 200);
+        return;
+    }
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) {
+        if (e) e.preventDefault();
+        window.location.href = url;
+    }
+}
+
+function onShareAction(type) {
+    const url = getGoogleCalendarUrl();
+    const toggle = $('calendarToggle');
+    if (toggle && toggle.checked && url) {
+        $('calendarNotice').style.display = 'block';
+        $('btnNoticeCalendar').href = url;
+    }
+}
+
+function closeDevisModal() {
+    $('devisModal').style.display = 'none';
+}
+
+function closeModalOnBg(e) {
+    if (e.target.id === 'devisModal') closeDevisModal();
+}
+
+function copyDevisText() {
+    const text = generateDevisText();
+    navigator.clipboard.writeText(text).then(() => {
+        showToast("✔ Devis copié ! Prêt à être collé.");
+    }).catch(() => {
+        showToast("Impossible de copier automatiquement.");
+    });
+}
+
+function showToast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+function resetAll() {
+    if (Object.keys(state.selected).length && !confirm("Créer un nouveau devis ? Les sélections actuelles seront remises à zéro.")) return;
+    state.selected = {};
+    state.customPrices = {};
+    $('clientName').value = '';
+    $('clientPhone').value = '';
+    $('rdvDate').value = '';
+    $('rdvTime').value = '';
+    $('rdvDuration').value = '90';
+    $('calendarToggle').checked = true;
+    $('calendarNotice').style.display = 'none';
+    $('searchInput').value = '';
+    $('customName').value = '';
+    $('customPrice').value = '';
+    $('citySelect').value = '';
+    $('depAmount').value = 0;
+    if ($('customKmInput')) $('customKmInput').value = '';
+    $('depDetailBox').style.display = 'none';
+    $('customKmRow').style.display = 'none';
+    $('depBadge').className = 'dep-badge';
+    $('depBadge').textContent = '10 km offerts';
+    state.depCity = '';
+    state.depDist = 0;
+    state.depActive = false;
+    state.depAmount = 0;
+    state.search = '';
+    renderList();
+    updateTotal();
+    try { localStorage.removeItem('devisMelanieDraft_V2'); } catch (e) {}
+    showToast("Nouveau devis prêt !");
+}
+
+function saveDraft() {
+    try {
+        const draft = {
+            savedAt: Date.now(),
+            selected: state.selected,
+            customPrices: state.customPrices,
+            name: $('clientName').value,
+            phone: $('clientPhone').value,
+            rdvDate: $('rdvDate').value,
+            rdvTime: $('rdvTime').value,
+            rdvDuration: $('rdvDuration').value,
+            calendarToggle: $('calendarToggle').checked,
+            depCity: state.depCity,
+            depDist: state.depDist,
+            depActive: state.depActive,
+            depAmount: state.depAmount,
+            citySelectVal: $('citySelect').value,
+            customKmVal: $('customKmInput') ? $('customKmInput').value : '',
+            customName: $('customName').value,
+            customPrice: $('customPrice').value
+        };
+        localStorage.setItem('devisMelanieDraft_V2', JSON.stringify(draft));
+    } catch (e) {}
+}
+
+function loadDraft() {
+    try {
+        const raw = localStorage.getItem('devisMelanieDraft_V2');
+        if (!raw) return;
+        const draft = JSON.parse(raw);
+        // Expiration automatique après 15 minutes (15 * 60 * 1000 ms)
+        const EXPIRATION_MS = 15 * 60 * 1000;
+        if (!draft.savedAt || (Date.now() - draft.savedAt > EXPIRATION_MS)) {
+            localStorage.removeItem('devisMelanieDraft_V2');
+            return;
+        }
+        if (draft.selected) state.selected = draft.selected;
+        if (draft.customPrices) state.customPrices = draft.customPrices;
+        if (draft.name) $('clientName').value = draft.name;
+        if (draft.phone) $('clientPhone').value = draft.phone;
+        if (draft.rdvDate) $('rdvDate').value = draft.rdvDate;
+        if (draft.rdvTime) $('rdvTime').value = draft.rdvTime;
+        if (draft.rdvDuration) $('rdvDuration').value = draft.rdvDuration;
+        if (typeof draft.calendarToggle === 'boolean') $('calendarToggle').checked = draft.calendarToggle;
+        if (draft.customName) $('customName').value = draft.customName;
+        if (draft.customPrice) $('customPrice').value = draft.customPrice;
+        if (draft.citySelectVal) {
+            $('citySelect').value = draft.citySelectVal;
+            if (draft.citySelectVal === 'CUSTOM' && $('customKmInput')) {
+                $('customKmInput').value = draft.customKmVal || '';
+            }
+            onCityChange();
+            if (draft.depAmount !== undefined) {
+                state.depAmount = draft.depAmount;
+                $('depAmount').value = draft.depAmount;
+            }
+        }
+    } catch (e) {}
+}
+
+// --- SÉCURITÉ CODE PIN (Cryptographie SHA-256 avec sel) ---
+// Aucun code PIN n'apparaît en clair dans le code source.
+const PIN_SALT = "ciseaux_melanie_securite_2026";
+const PIN_EXPECTED_HASH = "4d07b3b256947afb049e9705fbb018798adfca67e587383f1f18cfbc750ca4ed";
+const PIN_AUTH_KEY = "melanie_pin_auth_token_v2";
+
+let enteredPin = "";
+
+async function computeSha256(str) {
+    if (window.crypto && window.crypto.subtle) {
+        try {
+            const buf = new TextEncoder().encode(str);
+            const hash = await crypto.subtle.digest('SHA-256', buf);
+            return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch(e) {}
+    }
+    return sha256Sync(str);
+}
+
+function sha256Sync(ascii) {
+    function rightRotate(v, a) { return (v >>> a) | (v << (32 - a)); }
+    var mathPow = Math.pow, maxWord = mathPow(2, 32), words = [], result = '', asciiBitLength = ascii.length * 8;
+    var hash = [], k = [], primeCounter = 0, isComposite = {};
+    for (var candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+            for (var i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+            hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+            k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+        }
+    }
+    ascii += '\x80';
+    while (ascii.length % 64 - 56) ascii += '\x00';
+    for (var i = 0; i < ascii.length; i++) words[i >> 2] |= ascii.charCodeAt(i) << ((3 - i) % 4) * 8;
+    words[words.length] = ((asciiBitLength / maxWord) | 0);
+    words[words.length] = asciiBitLength;
+    for (var j = 0; j < words.length;) {
+        var w = words.slice(j, j += 16), oldHash = hash;
+        hash = hash.slice(0, 8);
+        for (var i = 0; i < 64; i++) {
+            var w15 = w[i - 15], w2 = w[i - 2];
+            var a = hash[0], e = hash[4];
+            var temp1 = hash[7] + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) + ((e & hash[5]) ^ ((~e) & hash[6])) + k[i] + (w[i] = (i < 16) ? w[i] : (w[i - 16] + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3)) + w[i - 7] + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))) | 0);
+            var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+            hash = [(temp1 + temp2) | 0].concat(hash);
+            hash[4] = (hash[4] + temp1) | 0;
+        }
+        for (var i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i]) | 0;
+    }
+    for (var i = 0; i < 8; i++) {
+        for (var i2 = 3; i2 >= 0; i2--) {
+            var b = (hash[i] >> (8 * i2)) & 255;
+            result += ((b < 16) ? 0 : '') + b.toString(16);
+        }
+    }
+    return result;
+}
+
+function checkPinAuth() {
+    try {
+        const stored = localStorage.getItem(PIN_AUTH_KEY) || sessionStorage.getItem(PIN_AUTH_KEY);
+        if (stored === PIN_EXPECTED_HASH) {
+            unlockApp(false);
+            return true;
+        }
+    } catch(e) {}
+    showPinOverlay();
+    return false;
+}
+
+function showPinOverlay() {
+    const overlay = $('pinOverlay');
+    if (overlay) overlay.style.display = 'flex';
+    document.body.classList.add('pin-locked');
+}
+
+function unlockApp(animate) {
+    const overlay = $('pinOverlay');
+    if (!overlay) return;
+    if (animate) {
+        overlay.classList.add('unlocking');
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            document.body.classList.remove('pin-locked');
+        }, 280);
+    } else {
+        overlay.style.display = 'none';
+        document.body.classList.remove('pin-locked');
+    }
+}
+
+function updatePinDots() {
+    const dots = document.querySelectorAll('.pin-dot');
+    dots.forEach((dot, idx) => {
+        if (idx < enteredPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+    });
+}
+
+async function pressPin(digit) {
+    if (enteredPin.length >= 4) return;
+    enteredPin += digit;
+    updatePinDots();
+    $('pinError').style.display = 'none';
+
+    if (enteredPin.length === 4) {
+        const hash = await computeSha256(PIN_SALT + enteredPin);
+        if (hash === PIN_EXPECTED_HASH) {
+            const remember = $('pinRemember').checked;
+            try {
+                if (remember) localStorage.setItem(PIN_AUTH_KEY, PIN_EXPECTED_HASH);
+                else sessionStorage.setItem(PIN_AUTH_KEY, PIN_EXPECTED_HASH);
+            } catch(e) {}
+            unlockApp(true);
+            enteredPin = "";
+            updatePinDots();
+        } else {
+            const dotsContainer = $('pinDots');
+            dotsContainer.classList.add('shake');
+            $('pinError').style.display = 'block';
+            setTimeout(() => {
+                dotsContainer.classList.remove('shake');
+                enteredPin = "";
+                updatePinDots();
+            }, 600);
+        }
+    }
+}
+
+function clearPin() {
+    enteredPin = "";
+    updatePinDots();
+    $('pinError').style.display = 'none';
+}
+
+function backspacePin() {
+    if (enteredPin.length > 0) {
+        enteredPin = enteredPin.slice(0, -1);
+        updatePinDots();
+        $('pinError').style.display = 'none';
+    }
+}
+
+function lockApp() {
+    try {
+        localStorage.removeItem(PIN_AUTH_KEY);
+        sessionStorage.removeItem(PIN_AUTH_KEY);
+    } catch(e) {}
+    clearPin();
+    showPinOverlay();
+    showToast("🔒 Application verrouillée");
+}
+
+window.addEventListener('keydown', (e) => {
+    const overlay = $('pinOverlay');
+    if (overlay && overlay.style.display !== 'none') {
+        if (/^[0-9]$/.test(e.key)) {
+            pressPin(e.key);
+        } else if (e.key === 'Backspace') {
+            backspacePin();
+        } else if (e.key === 'Escape' || e.key === 'Delete') {
+            clearPin();
+        }
+    }
+});
+
+// Initialisation
+window.addEventListener('DOMContentLoaded', () => {
+    initCitySelect();
+    checkPinAuth();
+    loadDraft();
+    renderList();
+    updateTotal();
+});
+</script>
+</body>
+</html>
