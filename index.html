@@ -785,6 +785,19 @@ body.pin-locked { overflow: hidden; }
                 <span class="slider"></span>
             </label>
         </div>
+        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:14px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <span id="messageModeIcon" style="font-size:1.3em;">📋</span>
+                <div>
+                    <div id="messageModeTitle" style="font-size:0.88em; font-weight:700;">Type de message : Récapitulatif</div>
+                    <div id="messageModeSub" style="font-size:0.75em; color:var(--text-light);">Coché = Récapitulatif de RDV • Décoché = Devis</div>
+                </div>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="messageModeToggle" checked onchange="onMessageModeChange()" />
+                <span class="slider"></span>
+            </label>
+        </div>
         <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; padding:6px 14px; background:#fffdf8; border:1px dashed var(--line); border-radius:12px;">
             <label style="font-size:0.78em; font-weight:700; color:var(--text-light); text-transform:uppercase;">Durée estimée du RDV :</label>
             <select id="rdvDuration" class="input-text" style="padding:4px 8px; font-size:0.85em; width:auto;" onchange="saveDraft()">
@@ -903,12 +916,12 @@ body.pin-locked { overflow: hidden; }
 <div class="bottom-bar">
     <div class="bottom-inner">
         <div class="total-box">
-            <span class="total-label">Total du devis</span>
+            <span class="total-label" id="totalLabel">Total du devis</span>
             <span class="total-amount" id="totalDisplay">0 €</span>
             <span class="total-count" id="countDisplay">0 prestation</span>
         </div>
         <button class="btn-cta" onclick="openDevisModal()">
-            <span>Voir & Envoyer</span>
+            <span id="btnCtaLabel">Voir & Envoyer</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
     </div>
@@ -918,8 +931,23 @@ body.pin-locked { overflow: hidden; }
 <div class="modal-overlay" id="devisModal" onclick="closeModalOnBg(event)">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 style="font-size:1.3em;" class="gold-text">Récapitulatif du Devis</h3>
+            <h3 style="font-size:1.3em;" class="gold-text" id="modalDevisTitle">Récapitulatif du Devis</h3>
             <button class="btn-close" onclick="closeDevisModal()">✕</button>
+        </div>
+
+        <!-- Sélecteur rapide Devis / Récapitulatif dans la modale -->
+        <div style="margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#fffdf8; border:1px solid var(--line); border-radius:12px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span id="modalModeIcon" style="font-size:1.15em;">📋</span>
+                <div>
+                    <div id="modalModeLabel" style="font-size:0.85em; font-weight:700; color:var(--text);">Mode Récapitulatif de RDV</div>
+                    <div id="modalModeSub" style="font-size:0.72em; color:var(--text-light);">Message de confirmation de rendez-vous</div>
+                </div>
+            </div>
+            <label class="toggle-switch" style="transform:scale(0.85); transform-origin:right center;">
+                <input type="checkbox" id="modalMessageModeToggle" checked onchange="onModalMessageModeChange()" />
+                <span class="slider"></span>
+            </label>
         </div>
 
         <div class="devis-sheet" id="devisSheet">
@@ -957,7 +985,7 @@ body.pin-locked { overflow: hidden; }
             </button>
             <button class="btn-share btn-copy" onclick="copyDevisText()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                Copier le texte du devis
+                <span id="btnCopyLabel">Copier le texte</span>
             </button>
         </div>
 
@@ -1582,17 +1610,83 @@ function formatRdvLabel() {
     return label;
 }
 
+function isRecapMode() {
+    const el = $('messageModeToggle');
+    return el ? el.checked : true;
+}
+
+function onMessageModeChange() {
+    const isRecap = isRecapMode();
+    updateMessageModeUI(isRecap);
+    saveDraft();
+}
+
+function onModalMessageModeChange() {
+    const elModal = $('modalMessageModeToggle');
+    const isRecap = elModal ? elModal.checked : true;
+    if ($('messageModeToggle')) $('messageModeToggle').checked = isRecap;
+    updateMessageModeUI(isRecap);
+    refreshModalShareLinks();
+    saveDraft();
+}
+
+function updateMessageModeUI(isRecap) {
+    if ($('messageModeToggle')) $('messageModeToggle').checked = isRecap;
+    if ($('modalMessageModeToggle')) $('modalMessageModeToggle').checked = isRecap;
+
+    const icon = isRecap ? '📋' : '🧾';
+    const mainTitle = isRecap ? 'Type de message : Récapitulatif' : 'Type de message : Devis';
+    const mainSub = isRecap ? 'Coché = Récapitulatif de RDV • Décoché = Devis' : 'Décoché = Devis • Cocher pour Récapitulatif de RDV';
+    const modalLabel = isRecap ? 'Mode Récapitulatif de RDV' : 'Mode Devis Rapide';
+    const modalSub = isRecap ? 'Message de confirmation de rendez-vous' : 'Message d\'estimation tarifaire';
+    const modalTitle = isRecap ? 'Récapitulatif de Rendez-vous' : 'Récapitulatif du Devis';
+    const copyLabel = isRecap ? 'Copier le récapitulatif' : 'Copier le texte du devis';
+    const totalLabel = isRecap ? 'Total du rendez-vous' : 'Total du devis';
+
+    if ($('messageModeIcon')) $('messageModeIcon').textContent = icon;
+    if ($('messageModeTitle')) $('messageModeTitle').textContent = mainTitle;
+    if ($('messageModeSub')) $('messageModeSub').textContent = mainSub;
+
+    if ($('modalModeIcon')) $('modalModeIcon').textContent = icon;
+    if ($('modalModeLabel')) $('modalModeLabel').textContent = modalLabel;
+    if ($('modalModeSub')) $('modalModeSub').textContent = modalSub;
+    if ($('modalDevisTitle')) $('modalDevisTitle').textContent = modalTitle;
+    if ($('btnCopyLabel')) $('btnCopyLabel').textContent = copyLabel;
+    if ($('totalLabel')) $('totalLabel').textContent = totalLabel;
+}
+
+function refreshModalShareLinks() {
+    const text = generateDevisText();
+    const phone = $('clientPhone').value.replace(/[^0-9+]/g, '');
+    const encoded = encodeURIComponent(text);
+
+    const smsHref = /iPad|iPhone|iPod/.test(navigator.userAgent)
+        ? `sms:${phone}&body=${encoded}`
+        : `sms:${phone}?body=${encoded}`;
+    if ($('btnSms')) $('btnSms').href = smsHref;
+
+    const waHref = phone ? `https://wa.me/${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
+    if ($('btnWa')) $('btnWa').href = waHref;
+}
+
 function generateDevisText() {
+    const isRecap = isRecapMode();
     const name = $('clientName').value.trim() || 'Madame / Monsieur';
     const lines = [];
 
-    lines.push(`✨ *DEVIS - Les Ciseaux de Mélanie* ✨`);
-    lines.push(`Coiffure à domicile & Événements\n`);
-    lines.push(`Bonjour ${name}, voici le détail de votre devis :`);
+    if (isRecap) {
+        lines.push(`✨ *RÉCAPITULATIF DE RENDEZ-VOUS - Les Ciseaux de Mélanie* ✨`);
+        lines.push(`Coiffure à domicile & Événements\n`);
+        lines.push(`Bonjour ${name}, voici le récapitulatif de votre rendez-vous :`);
+    } else {
+        lines.push(`✨ *DEVIS - Les Ciseaux de Mélanie* ✨`);
+        lines.push(`Coiffure à domicile & Événements\n`);
+        lines.push(`Bonjour ${name}, voici le détail de votre devis :`);
+    }
 
     const rdv = formatRdvLabel();
     if (rdv) {
-        lines.push(`🗓 Rendez-vous convenu : *${rdv}*`);
+        lines.push(isRecap ? `🗓 Rendez-vous fixé au : *${rdv}*` : `🗓 Rendez-vous envisagé : *${rdv}*`);
     } else {
         lines.push(`🗓 Rendez-vous : *date et horaire à convenir ensemble*`);
     }
@@ -1627,11 +1721,20 @@ function generateDevisText() {
     }
 
     const { total } = updateTotal();
-    lines.push(`\n👉 *TOTAL : ${eur(total)}*`);
-    if (rdv) {
-        lines.push(`\nJe reste à votre disposition si besoin d'ajustements. À très bientôt pour votre rendez-vous ! 🌸`);
+    lines.push(isRecap ? `\n👉 *TOTAL : ${eur(total)}*` : `\n👉 *TOTAL DU DEVIS : ${eur(total)}*`);
+
+    if (isRecap) {
+        if (rdv) {
+            lines.push(`\nVotre rendez-vous est bien noté dans mon planning. Au plaisir de prendre soin de vous ! À très bientôt ! 🌸`);
+        } else {
+            lines.push(`\nJe reste à votre disposition pour convenir ensemble du créneau idéal. À très bientôt ! 🌸`);
+        }
     } else {
-        lines.push(`\nJe reste à votre disposition pour convenir de la date et de l'horaire. À très bientôt ! 🌸`);
+        if (rdv) {
+            lines.push(`\nJe reste à votre disposition si besoin d'ajustements. À très bientôt pour votre rendez-vous ! 🌸`);
+        } else {
+            lines.push(`\nJe reste à votre disposition si besoin d'ajustements ou pour convenir de la date et de l'horaire. À très bientôt ! 🌸`);
+        }
     }
 
     return lines.join('\n');
@@ -1643,6 +1746,8 @@ function openDevisModal() {
         showToast("Veuillez sélectionner au moins une prestation");
         return;
     }
+
+    updateMessageModeUI(isRecapMode());
 
     const name = $('clientName').value.trim();
     $('modalClientInfo').textContent = name ? `Client : ${name}` : '';
@@ -1692,19 +1797,7 @@ function openDevisModal() {
     $('modalTotal').textContent = eur(total);
 
     // Préparation liens SMS & WhatsApp
-    const text = generateDevisText();
-    const phone = $('clientPhone').value.replace(/[^0-9+]/g, '');
-    const encoded = encodeURIComponent(text);
-
-    // SMS : support universel iOS/Android
-    const smsHref = /iPad|iPhone|iPod/.test(navigator.userAgent)
-        ? `sms:${phone}&body=${encoded}`
-        : `sms:${phone}?body=${encoded}`;
-    $('btnSms').href = smsHref;
-
-    // WhatsApp
-    const waHref = phone ? `https://wa.me/${phone}?text=${encoded}` : `https://wa.me/?text=${encoded}`;
-    $('btnWa').href = waHref;
+    refreshModalShareLinks();
 
     // Google Calendar
     $('calendarNotice').style.display = 'none';
@@ -1922,9 +2015,10 @@ function closeModalOnBg(e) {
 }
 
 function copyDevisText() {
+    const isRecap = isRecapMode();
     const text = generateDevisText();
     navigator.clipboard.writeText(text).then(() => {
-        showToast("✔ Devis copié ! Prêt à être collé.");
+        showToast(isRecap ? "✔ Récapitulatif copié ! Prêt à être collé." : "✔ Devis copié ! Prêt à être collé.");
     }).catch(() => {
         showToast("Impossible de copier automatiquement.");
     });
@@ -1947,6 +2041,7 @@ function resetAll() {
     $('rdvTime').value = '';
     $('rdvDuration').value = '90';
     $('calendarToggle').checked = true;
+    updateMessageModeUI(true);
     $('calendarNotice').style.display = 'none';
     $('searchInput').value = '';
     $('customName').value = '';
@@ -1984,6 +2079,7 @@ function saveDraft() {
             rdvTime: $('rdvTime').value,
             rdvDuration: $('rdvDuration').value,
             calendarToggle: $('calendarToggle').checked,
+            messageModeToggle: isRecapMode(),
             depCity: state.depCity,
             depDist: state.depDist,
             depActive: state.depActive,
@@ -2020,6 +2116,7 @@ function loadDraft() {
         if (draft.rdvTime) $('rdvTime').value = draft.rdvTime;
         if (draft.rdvDuration) $('rdvDuration').value = draft.rdvDuration;
         if (typeof draft.calendarToggle === 'boolean') $('calendarToggle').checked = draft.calendarToggle;
+        if (typeof draft.messageModeToggle === 'boolean') updateMessageModeUI(draft.messageModeToggle);
         if (draft.customName) $('customName').value = draft.customName;
         if (draft.customPrice) $('customPrice').value = draft.customPrice;
         if (draft.citySelectVal) {
@@ -2213,6 +2310,7 @@ window.addEventListener('DOMContentLoaded', () => {
     initCitySelect();
     checkPinAuth();
     loadDraft();
+    updateMessageModeUI(isRecapMode());
     renderList();
     updateTotal();
 });
