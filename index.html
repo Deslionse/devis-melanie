@@ -283,6 +283,38 @@ h1 { font-size: 1.85rem; letter-spacing: 0.5px; margin-top: 2px; font-weight: 70
 input:checked + .slider { background-color: var(--rose); }
 input:checked + .slider::before { transform: translateX(22px); }
 
+/* Mini toggle compact */
+.toggle-switch-sm { position: relative; width: 32px; height: 18px; display: inline-block; flex-shrink: 0; }
+.toggle-switch-sm input { opacity: 0; width: 0; height: 0; }
+.slider-sm {
+    position: absolute; cursor: pointer; inset: 0;
+    background-color: #ddd; border-radius: 20px; transition: .25s;
+}
+.slider-sm::before {
+    position: absolute; content: ""; height: 14px; width: 14px; left: 2px; bottom: 2px;
+    background-color: white; border-radius: 50%; transition: .25s;
+}
+input:checked + .slider-sm { background-color: var(--rose); }
+input:checked + .slider-sm::before { transform: translateX(14px); }
+
+.mode-switch-compact {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+}
+.mode-switch-compact:hover {
+    border-color: var(--rose-soft);
+    background: #fff8f9;
+}
+
 .dep-price-box {
     display: none;
     margin-top: 8px;
@@ -734,8 +766,18 @@ body.pin-locked { overflow: hidden; }
 
     <!-- Client & Contexte -->
     <section class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h2>👤 Client au téléphone</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <h2 style="margin:0;">👤 Client au téléphone</h2>
+                <div class="mode-switch-compact" onclick="toggleHeaderMode(event)" title="Cliquer pour basculer entre Devis et Récapitulatif">
+                    <span id="messageModeIcon" style="font-size:0.95em;">📋</span>
+                    <span id="messageModeTitle" style="font-size:0.82em; font-weight:700; color:var(--rose);">Récap</span>
+                    <label class="toggle-switch-sm" onclick="event.stopPropagation()">
+                        <input type="checkbox" id="messageModeToggle" checked onchange="onMessageModeChange()" />
+                        <span class="slider-sm"></span>
+                    </label>
+                </div>
+            </div>
             <div style="display:flex; gap:8px;">
                 <button class="btn-reset" onclick="resetAll()">Nouveau devis</button>
                 <button class="btn-lock" onclick="lockApp()" title="Verrouiller l'accès">🔒</button>
@@ -782,19 +824,6 @@ body.pin-locked { overflow: hidden; }
             </div>
             <label class="toggle-switch">
                 <input type="checkbox" id="calendarToggle" checked onchange="saveDraft()" />
-                <span class="slider"></span>
-            </label>
-        </div>
-        <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#fff; border:1px solid var(--line); border-radius:14px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span id="messageModeIcon" style="font-size:1.3em;">📋</span>
-                <div>
-                    <div id="messageModeTitle" style="font-size:0.88em; font-weight:700;">Type de message : Récapitulatif</div>
-                    <div id="messageModeSub" style="font-size:0.75em; color:var(--text-light);">Coché = Récapitulatif de RDV • Décoché = Devis</div>
-                </div>
-            </div>
-            <label class="toggle-switch">
-                <input type="checkbox" id="messageModeToggle" checked onchange="onMessageModeChange()" />
                 <span class="slider"></span>
             </label>
         </div>
@@ -1630,13 +1659,21 @@ function onModalMessageModeChange() {
     saveDraft();
 }
 
+function toggleHeaderMode(e) {
+    if (e && e.target && e.target.tagName && e.target.tagName.toLowerCase() === 'input') return;
+    const chk = $('messageModeToggle');
+    if (chk) {
+        chk.checked = !chk.checked;
+        onMessageModeChange();
+    }
+}
+
 function updateMessageModeUI(isRecap) {
     if ($('messageModeToggle')) $('messageModeToggle').checked = isRecap;
     if ($('modalMessageModeToggle')) $('modalMessageModeToggle').checked = isRecap;
 
     const icon = isRecap ? '📋' : '🧾';
-    const mainTitle = isRecap ? 'Type de message : Récapitulatif' : 'Type de message : Devis';
-    const mainSub = isRecap ? 'Coché = Récapitulatif de RDV • Décoché = Devis' : 'Décoché = Devis • Cocher pour Récapitulatif de RDV';
+    const compactLabel = isRecap ? 'Récap' : 'Devis';
     const modalLabel = isRecap ? 'Mode Récapitulatif de RDV' : 'Mode Devis Rapide';
     const modalSub = isRecap ? 'Message de confirmation de rendez-vous' : 'Message d\'estimation tarifaire';
     const modalTitle = isRecap ? 'Récapitulatif de Rendez-vous' : 'Récapitulatif du Devis';
@@ -1644,8 +1681,10 @@ function updateMessageModeUI(isRecap) {
     const totalLabel = isRecap ? 'Total du rendez-vous' : 'Total du devis';
 
     if ($('messageModeIcon')) $('messageModeIcon').textContent = icon;
-    if ($('messageModeTitle')) $('messageModeTitle').textContent = mainTitle;
-    if ($('messageModeSub')) $('messageModeSub').textContent = mainSub;
+    if ($('messageModeTitle')) {
+        $('messageModeTitle').textContent = compactLabel;
+        $('messageModeTitle').style.color = isRecap ? 'var(--rose)' : 'var(--gold-dark)';
+    }
 
     if ($('modalModeIcon')) $('modalModeIcon').textContent = icon;
     if ($('modalModeLabel')) $('modalModeLabel').textContent = modalLabel;
